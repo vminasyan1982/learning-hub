@@ -1,0 +1,172 @@
+export type UserRole = "admin" | "manager" | "td_team" | "viewer";
+
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: UserRole;
+  department: string;
+  business_unit: string;
+  position: string;
+  phone: string;
+  is_active: boolean;
+  date_joined: string;
+  must_change_password: boolean;
+}
+
+export interface AuthTokens {
+  access: string;
+  refresh: string;
+}
+
+export interface InvitationToken {
+  id: number;
+  token: string;
+  note: string;
+  is_used: boolean;
+  is_valid: boolean;
+  expires_at: string;
+  created_at: string;
+  invite_url: string;
+  created_by: { id: number; first_name: string; last_name: string; email: string; role: UserRole };
+}
+
+export interface RegistrationRequest {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  position: string;
+  department: string;
+  business_unit: string;
+  requested_role: UserRole;
+  status: "pending" | "approved" | "denied";
+  denial_reason: string;
+  created_at: string;
+}
+
+export type TrainingFormat = "online" | "offline" | "mixed";
+
+export interface BusinessUnit {
+  id: number;
+  name: string;
+}
+
+export interface TrainingMetric {
+  id: number;
+  nps_score: number | null;
+  nps_percent: number | null;
+  csat_score: number | null;
+  csat_percent: number | null;
+  business_value: number | null;
+  lh_standards_score: number | null;
+  trainer_rating: number | null;
+  discipline_ok: boolean;
+  participants_count: number;
+  notes: string;
+}
+
+export interface Training {
+  id: number;
+  title: string;
+  date: string;
+  end_date: string | null;
+  location: string;
+  format: TrainingFormat;
+  classification: string;
+  business_units: BusinessUnit[];
+  description: string;
+  lms_url: string;
+  asana_url: string;
+  drive_url: string;
+  feedback_url: string;
+  is_internal: boolean;
+  metric: TrainingMetric | null;
+  created_at: string;
+}
+
+export type RegistryStatus = "not_started" | "in_progress" | "on_hold" | "completed" | "at_risk" | "cancelled" | "done";
+export type RegistryCenter = "td" | "assessment";
+
+export interface InternalRegistryEntry {
+  id: number;
+  request_date: string;
+  center: RegistryCenter;
+  format: string;
+  title: string;
+  asana_url: string;
+  project_manager: string;
+  developers: string;
+  deadline: string | null;
+  status: RegistryStatus;
+  completed_on_time: boolean | null;
+  materials_url: string;
+  comments: string;
+  created_at: string;
+}
+
+export interface Trainer {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  bio: string;
+  photo: string | null;
+  trainer_types: string[];
+  is_internal: boolean;
+  is_active: boolean;
+  avg_nps: number;
+  avg_csat: number;
+  training_count: number;
+  created_at: string;
+}
+
+export interface Trainee {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  position: string;
+  department: string;
+  business_unit: string;
+  is_active: boolean;
+}
+
+export interface PortfolioItem {
+  id: number;
+  promo_name: string;
+  internal_name: string;
+  banner: string | null;
+  skills: string;
+  language: string;
+  enrollment_info: string;
+  is_active: boolean;
+  order: number;
+}
+
+export interface AnalyticsSummary {
+  total_trainings: number;
+  avg_nps: number;
+  avg_csat: number;
+  avg_lh_standards: number;
+  avg_trainer_rating: number;
+  total_participants: number;
+}
+
+export interface TrendPoint {
+  period: string;
+  avg_nps: number;
+  avg_csat: number;
+  count: number;
+}
+
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}

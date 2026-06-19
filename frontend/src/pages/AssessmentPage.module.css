@@ -1,0 +1,23 @@
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  gap: 12px;
+}
+
+.icon { font-size: 56px; }
+
+.placeholder h2 {
+  font-size: 22px;
+  color: var(--color-primary);
+}
+
+.placeholder p {
+  font-size: 14px;
+  color: var(--color-gray-500);
+  max-width: 400px;
+  font-weight: var(--font-weight-light);
+}

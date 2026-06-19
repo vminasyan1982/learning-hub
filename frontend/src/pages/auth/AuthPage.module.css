@@ -1,0 +1,95 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-2) 100%);
+  padding: 24px;
+}
+
+.card {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+}
+
+.cardWide { max-width: 600px; }
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.logo h1 {
+  font-size: 22px;
+  color: var(--color-primary);
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--color-gray-500);
+  font-size: 13px;
+  margin-bottom: 28px;
+  font-weight: var(--font-weight-light);
+}
+
+.form { display: flex; flex-direction: column; gap: 16px; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.field label {
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.field input,
+.field select {
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  color: var(--color-gray-900);
+  background: var(--color-white);
+  transition: var(--transition);
+  outline: none;
+  width: 100%;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0,169,88,0.12);
+}
+
+.error {
+  background: #FEE8E8;
+  color: var(--color-danger);
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  font-size: 13px;
+}
+
+.btn {
+  background: var(--color-accent);
+  color: var(--color-white);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  transition: var(--transition);
+  margin-top: 4px;
+}
+
+.btn:hover:not(:disabled) { background: var(--color-primary-2); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }

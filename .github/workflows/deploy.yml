@@ -1,0 +1,42 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to 185.157.245.247
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            cd /opt/learning-hub
+
+            echo "Pulling latest code..."
+            git pull origin main
+
+            echo "Rebuilding containers..."
+            docker compose up --build -d --remove-orphans
+
+            echo "Running migrations..."
+            docker compose exec -T backend python manage.py migrate --noinput
+
+            echo "Collecting static files..."
+            docker compose exec -T backend python manage.py collectstatic --noinput
+
+            echo "Cleaning up old images..."
+            docker image prune -f
+
+            echo "Deploy complete!"
