@@ -69,8 +69,8 @@ class RegistrationSubmitSerializer(serializers.Serializer):
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Пользователь с этим email уже зарегистрирован.")
-        if RegistrationRequest.objects.filter(email=value, status="pending").exists():
-            raise serializers.ValidationError("Заявка с этим email уже отправлена и ожидает рассмотрения.")
+        if RegistrationRequest.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Заявка с этим email уже существует.")
         return value
 
 

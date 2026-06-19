@@ -56,9 +56,14 @@ export default function RegisterPage() {
       setSubmitted(true);
     } catch (err: any) {
       const data = err.response?.data;
-      const msg = typeof data === "object"
-        ? Object.values(data).flat().join(" ")
-        : "Произошла ошибка. Попробуйте снова.";
+      let msg = "Произошла ошибка. Попробуйте снова.";
+      if (data && typeof data === "object") {
+        msg = Object.values(data).flat().join(" ");
+      } else if (err.response?.status === 429) {
+        msg = "Слишком много попыток. Попробуйте через час.";
+      } else if (err.response?.status === 403) {
+        msg = "Доступ запрещён. Попробуйте позже.";
+      }
       setError(msg);
     } finally {
       setLoading(false);

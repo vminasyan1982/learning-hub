@@ -65,7 +65,7 @@ class ValidateTokenView(APIView):
         return Response({"valid": True})
 
 
-@method_decorator(ratelimit(key="ip", rate="5/h", method="POST", block=True), name="post")
+@method_decorator(ratelimit(key="ip", rate="20/h", method="POST", block=True), name="post")
 class RegistrationSubmitView(APIView):
     permission_classes = [permissions.AllowAny]
 
