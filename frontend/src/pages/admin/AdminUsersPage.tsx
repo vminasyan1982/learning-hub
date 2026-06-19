@@ -14,8 +14,8 @@ type Tab = "users" | "requests" | "invitations";
 
 export default function AdminUsersPage() {
   const { user } = useAuthStore();
-  if (user?.role !== "admin") return <Navigate to="/" replace />;
 
+  // All hooks must be declared before any conditional return
   const [tab, setTab] = useState<Tab>("requests");
   const [users, setUsers] = useState<User[]>([]);
   const [requests, setRequests] = useState<RegistrationRequest[]>([]);
@@ -37,6 +37,9 @@ export default function AdminUsersPage() {
   };
 
   useEffect(() => { loadAll(); }, []);
+
+  // Guard after all hooks
+  if (user?.role !== "admin") return <Navigate to="/" replace />;
 
   const handleApprove = async (id: number) => {
     await approveRegistration(id, "viewer");
