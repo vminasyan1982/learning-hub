@@ -5,9 +5,43 @@
   box-shadow: var(--shadow-sm);
   border-left: 4px solid var(--color-primary);
   transition: var(--transition);
+  position: relative;
 }
 
 .card:hover { box-shadow: var(--shadow-md); }
+
+.hasDetails { cursor: pointer; }
+.hasDetails:hover { transform: translateY(-1px); }
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--color-gray-900);
+  color: var(--color-gray-50);
+  border-radius: var(--border-radius);
+  padding: 10px 14px;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.tooltipRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+  font-size: 12px;
+  gap: 12px;
+}
+
+.tooltipRow + .tooltipRow {
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.tooltipLabel { color: rgba(255,255,255,0.65); white-space: nowrap; }
+.tooltipValue { font-weight: var(--font-weight-semibold); color: #fff; white-space: nowrap; }
 
 .card.primary { border-left-color: var(--color-primary); }
 .card.accent  { border-left-color: var(--color-accent); }

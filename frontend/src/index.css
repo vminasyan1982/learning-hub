@@ -49,6 +49,34 @@
   --color-gray-900: #F7FAFC;
 }
 
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background: var(--color-gray-200);
+  color: var(--color-gray-900);
+  border-color: var(--color-gray-300);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--color-gray-500);
+}
+
+[data-theme="dark"] table thead th {
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+  border-bottom-color: var(--color-gray-300);
+}
+
+[data-theme="dark"] table tbody tr:hover {
+  background: var(--color-gray-100);
+}
+
+[data-theme="dark"] table tbody td {
+  border-bottom-color: var(--color-gray-200);
+  color: var(--color-gray-800);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body, #root {

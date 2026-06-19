@@ -150,11 +150,22 @@ export interface PortfolioItem {
 
 export interface AnalyticsSummary {
   total_trainings: number;
+  online_count: number;
+  offline_count: number;
+  mixed_count: number;
   avg_nps: number;
+  nps_target_met: number;
   avg_csat: number;
+  csat_target_met: number;
   avg_lh_standards: number;
   avg_trainer_rating: number;
+  trainer_rating_met: number;
   total_participants: number;
+  avg_participants_per_training: number;
+  total_trainers: number;
+  internal_trainers: number;
+  external_trainers: number;
+  total_metrics: number;
 }
 
 export interface TrendPoint {

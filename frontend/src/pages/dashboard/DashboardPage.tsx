@@ -18,6 +18,9 @@ export default function DashboardPage() {
     getAnalyticsTrends({ granularity: "month" }).then((r) => setTrends(r.data)).catch(() => {});
   }, []);
 
+  const pct = (part: number, total: number) =>
+    total ? `${Math.round((part / total) * 100)}%` : "—";
+
   return (
     <div className={styles.page}>
       <div className={styles.kpiGrid}>
@@ -26,6 +29,11 @@ export default function DashboardPage() {
           value={summary?.total_trainings ?? "—"}
           icon={<BookOpen size={18} />}
           color="primary"
+          details={summary ? [
+            { label: "Online", value: summary.online_count },
+            { label: "Offline", value: summary.offline_count },
+            { label: "Blended", value: summary.mixed_count },
+          ] : undefined}
         />
         <KpiCard
           title="Avg NPS"
@@ -33,6 +41,10 @@ export default function DashboardPage() {
           subtitle="Target ≥ 3.0"
           icon={<TrendingUp size={18} />}
           color="accent"
+          details={summary ? [
+            { label: "Meeting target (≥3.0)", value: `${summary.nps_target_met} / ${summary.total_metrics}` },
+            { label: "Pass rate", value: pct(summary.nps_target_met, summary.total_metrics) },
+          ] : undefined}
         />
         <KpiCard
           title="Avg CSAT"
@@ -40,12 +52,20 @@ export default function DashboardPage() {
           subtitle="Target ≥ 4.3"
           icon={<Star size={18} />}
           color="info"
+          details={summary ? [
+            { label: "Meeting target (≥4.3)", value: `${summary.csat_target_met} / ${summary.total_metrics}` },
+            { label: "Pass rate", value: pct(summary.csat_target_met, summary.total_metrics) },
+          ] : undefined}
         />
         <KpiCard
           title="Participants Trained"
           value={summary?.total_participants ?? "—"}
           icon={<UserCheck size={18} />}
           color="warning"
+          details={summary ? [
+            { label: "Avg per training", value: summary.avg_participants_per_training },
+            { label: "Trainings with data", value: summary.total_metrics },
+          ] : undefined}
         />
         <KpiCard
           title="Trainer Rating"
@@ -53,6 +73,11 @@ export default function DashboardPage() {
           subtitle="Target ≥ 4.5"
           icon={<Award size={18} />}
           color="danger"
+          details={summary ? [
+            { label: "Rating ≥ 4.5", value: `${summary.trainer_rating_met} / ${summary.total_metrics}` },
+            { label: "Internal trainers", value: summary.internal_trainers },
+            { label: "External trainers", value: summary.external_trainers },
+          ] : undefined}
         />
         <KpiCard
           title="LH Standards"
@@ -60,6 +85,11 @@ export default function DashboardPage() {
           subtitle="Target ≥ 4.5"
           icon={<Users size={18} />}
           color="primary"
+          details={summary ? [
+            { label: "Total active trainers", value: summary.total_trainers },
+            { label: "Internal", value: summary.internal_trainers },
+            { label: "External", value: summary.external_trainers },
+          ] : undefined}
         />
       </div>
 
