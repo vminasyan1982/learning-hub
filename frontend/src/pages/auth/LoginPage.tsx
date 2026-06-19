@@ -19,7 +19,7 @@ export default function LoginPage() {
       await login(form.username, form.password);
       navigate("/");
     } catch {
-      setError("Неверный логин или пароль. Попробуйте ещё раз.");
+      setError("Invalid username or password.");
     } finally {
       setLoading(false);
     }
@@ -32,35 +32,35 @@ export default function LoginPage() {
           <Zap size={32} color="var(--color-accent)" />
           <h1>Learning Hub</h1>
         </div>
-        <p className={styles.subtitle}>Аналитический дашборд T&D</p>
+        <p className={styles.subtitle}>T&D Analytics Dashboard</p>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>
-            <label htmlFor="username">Логин</label>
+            <label htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
-              placeholder="Введите логин"
+              placeholder="Enter username"
               required
               autoFocus
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="password">Пароль</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              placeholder="Введите пароль"
+              placeholder="Enter password"
               required
             />
           </div>
           {error && <div className={styles.error}>{error}</div>}
           <button type="submit" className={styles.btn} disabled={loading}>
-            {loading ? "Входим…" : "Войти"}
+            {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
       </div>

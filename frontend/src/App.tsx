@@ -15,6 +15,7 @@ import PortfolioPage from "@/pages/portfolio/PortfolioPage";
 import AssessmentPage from "@/pages/AssessmentPage";
 import AdminUsersPage from "@/pages/admin/AdminUsersPage";
 import ChangePasswordPage from "@/pages/auth/ChangePasswordPage";
+import ProfilePage from "@/pages/profile/ProfilePage";
 
 export default function App() {
   const { fetchMe } = useAuthStore();
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/trainees" element={<TraineesPage />} />
             <Route path="/assessment" element={<AssessmentPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

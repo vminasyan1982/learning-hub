@@ -13,6 +13,7 @@ export const logout = (refresh: string) =>
   api.post("/auth/logout/", { refresh });
 
 export const getMe = () => api.get<User>("/auth/me/");
+export const updateMe = (data: object) => api.patch<User>("/auth/me/", data);
 
 export const changePassword = (data: { old_password: string; new_password: string; new_password_confirm: string }) =>
   api.post("/auth/change-password/", data);

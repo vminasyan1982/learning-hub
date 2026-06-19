@@ -20,11 +20,11 @@ export default function TrainersPage() {
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
-        <input className={styles.search} placeholder="Поиск тренера…" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <input className={styles.search} placeholder="Search trainer…" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
       {loading ? (
-        <div className={styles.center}>Загрузка…</div>
+        <div className={styles.center}>Loading…</div>
       ) : (
         <div className={cardStyles.grid}>
           {trainers.map((t) => (
@@ -33,7 +33,7 @@ export default function TrainersPage() {
                 {t.photo ? <img src={t.photo} alt={t.last_name} /> : <span>{t.first_name[0]}{t.last_name[0]}</span>}
               </div>
               <div className={cardStyles.name}>{t.first_name} {t.last_name}</div>
-              <Badge variant={t.is_internal ? "success" : "info"}>{t.is_internal ? "Внутренний" : "Внешний"}</Badge>
+              <Badge variant={t.is_internal ? "success" : "info"}>{t.is_internal ? "Internal" : "External"}</Badge>
               <div className={cardStyles.metrics}>
                 <div><strong>NPS:</strong> {t.avg_nps || "—"}</div>
                 <div><strong>CSAT:</strong> {t.avg_csat || "—"}</div>
@@ -41,7 +41,7 @@ export default function TrainersPage() {
               {t.email && <div className={cardStyles.email}>{t.email}</div>}
             </div>
           ))}
-          {trainers.length === 0 && <div className={styles.center}>Тренеры не найдены</div>}
+          {trainers.length === 0 && <div className={styles.center}>No trainers found</div>}
         </div>
       )}
     </div>

@@ -47,7 +47,7 @@ export default function AdminUsersPage() {
   };
 
   const handleDeny = async (id: number) => {
-    const reason = prompt("Причина отказа (необязательно):");
+    const reason = prompt("Reason for denial (optional):");
     await denyRegistration(id, reason || undefined);
     loadAll();
   };
@@ -62,27 +62,27 @@ export default function AdminUsersPage() {
     <div className={styles.page}>
       <div className={adminStyles.tabs}>
         <button className={`${adminStyles.tab} ${tab === "requests" ? adminStyles.tabActive : ""}`} onClick={() => setTab("requests")}>
-          Заявки {requests.length > 0 && <span className={adminStyles.badge}>{requests.length}</span>}
+          Requests {requests.length > 0 && <span className={adminStyles.badge}>{requests.length}</span>}
         </button>
         <button className={`${adminStyles.tab} ${tab === "invitations" ? adminStyles.tabActive : ""}`} onClick={() => setTab("invitations")}>
-          Приглашения
+          Invitations
         </button>
         <button className={`${adminStyles.tab} ${tab === "users" ? adminStyles.tabActive : ""}`} onClick={() => setTab("users")}>
-          Пользователи
+          Users
         </button>
       </div>
 
-      {loading && <div className={styles.center}>Загрузка…</div>}
+      {loading && <div className={styles.center}>Loading…</div>}
 
       {!loading && tab === "requests" && (
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead>
-              <tr><th>ФИО</th><th>Email</th><th>Должность</th><th>Бизнес-юнит</th><th>Роль</th><th>Дата</th><th>Действия</th></tr>
+              <tr><th>Name</th><th>Email</th><th>Position</th><th>Business Unit</th><th>Role</th><th>Date</th><th>Actions</th></tr>
             </thead>
             <tbody>
               {requests.length === 0 ? (
-                <tr><td colSpan={7} className={styles.center}>Нет ожидающих заявок</td></tr>
+                <tr><td colSpan={7} className={styles.center}>No pending requests</td></tr>
               ) : requests.map((r) => (
                 <tr key={r.id}>
                   <td>{r.first_name} {r.last_name}</td>
@@ -93,8 +93,8 @@ export default function AdminUsersPage() {
                   <td>{r.created_at.slice(0, 10)}</td>
                   <td>
                     <div className={adminStyles.actions}>
-                      <button className={adminStyles.approveBtn} onClick={() => handleApprove(r.id)}>Одобрить</button>
-                      <button className={adminStyles.denyBtn} onClick={() => handleDeny(r.id)}>Отклонить</button>
+                      <button className={adminStyles.approveBtn} onClick={() => handleApprove(r.id)}>Approve</button>
+                      <button className={adminStyles.denyBtn} onClick={() => handleDeny(r.id)}>Deny</button>
                     </div>
                   </td>
                 </tr>
@@ -109,18 +109,18 @@ export default function AdminUsersPage() {
           <div className={adminStyles.inviteCreate}>
             <input
               className={styles.search}
-              placeholder="Для кого приглашение (необязательно)"
+              placeholder="Note (optional)"
               value={inviteNote}
               onChange={(e) => setInviteNote(e.target.value)}
             />
             <button className={adminStyles.approveBtn} onClick={handleCreateInvite}>
-              Создать приглашение
+              Create invitation
             </button>
           </div>
           <div className={styles.tableWrap}>
             <table className={styles.table}>
               <thead>
-                <tr><th>Ссылка</th><th>Примечание</th><th>Статус</th><th>Истекает</th></tr>
+                <tr><th>Link</th><th>Note</th><th>Status</th><th>Expires</th></tr>
               </thead>
               <tbody>
                 {invitations.map((inv) => (
@@ -133,7 +133,7 @@ export default function AdminUsersPage() {
                     <td>{inv.note || "—"}</td>
                     <td>
                       <Badge variant={inv.is_used ? "neutral" : inv.is_valid ? "success" : "danger"}>
-                        {inv.is_used ? "Использован" : inv.is_valid ? "Активен" : "Истёк"}
+                        {inv.is_used ? "Used" : inv.is_valid ? "Active" : "Expired"}
                       </Badge>
                     </td>
                     <td>{inv.expires_at.slice(0, 16).replace("T", " ")}</td>
@@ -149,7 +149,7 @@ export default function AdminUsersPage() {
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead>
-              <tr><th>Логин</th><th>ФИО</th><th>Email</th><th>Роль</th><th>Отдел</th><th>Статус</th></tr>
+              <tr><th>Username</th><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Status</th></tr>
             </thead>
             <tbody>
               {users.map((u) => (
@@ -159,7 +159,7 @@ export default function AdminUsersPage() {
                   <td>{u.email}</td>
                   <td><Badge variant="info">{u.role}</Badge></td>
                   <td>{u.department || "—"}</td>
-                  <td><Badge variant={u.is_active ? "success" : "danger"}>{u.is_active ? "Активен" : "Заблокирован"}</Badge></td>
+                  <td><Badge variant={u.is_active ? "success" : "danger"}>{u.is_active ? "Active" : "Blocked"}</Badge></td>
                 </tr>
               ))}
             </tbody>

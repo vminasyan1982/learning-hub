@@ -4,6 +4,7 @@
   border-bottom: 1px solid var(--color-gray-200);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 24px;
   position: sticky;
   top: 0;
@@ -15,3 +16,99 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
 }
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.themeBtn {
+  background: transparent;
+  color: var(--color-gray-500);
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.themeBtn:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.avatar:hover { opacity: 0.85; }
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.dropdownHeader {
+  padding: 12px 16px;
+}
+
+.dropdownName {
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+}
+
+.dropdownRole {
+  font-size: 11px;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--color-gray-200);
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--color-gray-700);
+  background: transparent;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.dropdownItem:hover {
+  background: var(--color-gray-50);
+  color: var(--color-gray-900);
+}
+
+.dropdownItemDanger { color: var(--color-danger); }
+.dropdownItemDanger:hover { background: #FEE8E8; color: var(--color-danger); }

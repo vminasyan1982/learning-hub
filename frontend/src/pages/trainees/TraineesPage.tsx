@@ -19,18 +19,18 @@ export default function TraineesPage() {
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
-        <input className={styles.search} placeholder="Поиск участника…" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <input className={styles.search} placeholder="Search participant…" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <thead>
-            <tr><th>ФИО</th><th>Email</th><th>Должность</th><th>Бизнес-юнит</th><th>Отдел</th></tr>
+            <tr><th>Name</th><th>Email</th><th>Position</th><th>Business Unit</th><th>Department</th></tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={5} className={styles.center}>Загрузка…</td></tr>
+              <tr><td colSpan={5} className={styles.center}>Loading…</td></tr>
             ) : trainees.length === 0 ? (
-              <tr><td colSpan={5} className={styles.center}>Участники не найдены</td></tr>
+              <tr><td colSpan={5} className={styles.center}>No participants found</td></tr>
             ) : trainees.map((t) => (
               <tr key={t.id}>
                 <td className={styles.titleCell}>{t.first_name} {t.last_name}</td>
@@ -43,7 +43,7 @@ export default function TraineesPage() {
           </tbody>
         </table>
       </div>
-      <div className={styles.footer}>Всего: {total}</div>
+      <div className={styles.footer}>Total: {total}</div>
     </div>
   );
 }

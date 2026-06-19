@@ -5,13 +5,13 @@ import Badge from "@/components/ui/Badge";
 import styles from "../trainings/TrainingsPage.module.css";
 
 const STATUS_MAP: Record<RegistryStatus, { label: string; variant: "success" | "warning" | "danger" | "info" | "neutral" | "default" }> = {
-  not_started: { label: "Не начат", variant: "neutral" },
-  in_progress: { label: "В работе", variant: "info" },
-  on_hold: { label: "На паузе", variant: "warning" },
-  completed: { label: "Завершён", variant: "success" },
-  at_risk: { label: "Под риском", variant: "danger" },
-  cancelled: { label: "Отменён", variant: "danger" },
-  done: { label: "Выполнен", variant: "success" },
+  not_started: { label: "Not started", variant: "neutral" },
+  in_progress: { label: "In progress", variant: "info" },
+  on_hold: { label: "On hold", variant: "warning" },
+  completed: { label: "Completed", variant: "success" },
+  at_risk: { label: "At risk", variant: "danger" },
+  cancelled: { label: "Cancelled", variant: "danger" },
+  done: { label: "Done", variant: "success" },
 };
 
 export default function RegistryPage() {
@@ -33,12 +33,12 @@ export default function RegistryPage() {
       <div className={styles.toolbar}>
         <input
           className={styles.search}
-          placeholder="Поиск по названию, PM…"
+          placeholder="Search by title, PM…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <select className={styles.select} value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">Все статусы</option>
+          <option value="">All statuses</option>
           {Object.entries(STATUS_MAP).map(([k, v]) => (
             <option key={k} value={k}>{v.label}</option>
           ))}
@@ -49,27 +49,27 @@ export default function RegistryPage() {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Название запроса</th>
-              <th>Дата</th>
-              <th>Центр</th>
-              <th>Статус</th>
-              <th>Руководитель проекта</th>
-              <th>Срок</th>
-              <th>В срок</th>
+              <th>Request title</th>
+              <th>Date</th>
+              <th>Center</th>
+              <th>Status</th>
+              <th>Project Manager</th>
+              <th>Deadline</th>
+              <th>On time</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className={styles.center}>Загрузка…</td></tr>
+              <tr><td colSpan={7} className={styles.center}>Loading…</td></tr>
             ) : entries.length === 0 ? (
-              <tr><td colSpan={7} className={styles.center}>Записи не найдены</td></tr>
+              <tr><td colSpan={7} className={styles.center}>No records found</td></tr>
             ) : entries.map((e) => {
               const s = STATUS_MAP[e.status] || { label: e.status, variant: "default" as const };
               return (
                 <tr key={e.id}>
                   <td className={styles.titleCell}>{e.title}</td>
                   <td>{e.request_date}</td>
-                  <td><Badge variant="info">{e.center === "td" ? "T&D" : "Ассессмент"}</Badge></td>
+                  <td><Badge variant="info">{e.center === "td" ? "T&D" : "Assessment"}</Badge></td>
                   <td><Badge variant={s.variant}>{s.label}</Badge></td>
                   <td>{e.project_manager || "—"}</td>
                   <td>{e.deadline || "—"}</td>
@@ -80,7 +80,7 @@ export default function RegistryPage() {
           </tbody>
         </table>
       </div>
-      <div className={styles.footer}>Всего: {total}</div>
+      <div className={styles.footer}>Total: {total}</div>
     </div>
   );
 }

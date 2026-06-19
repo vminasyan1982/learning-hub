@@ -6,7 +6,7 @@ import { exportToExcel } from "@/utils/export";
 import styles from "./TrainingsPage.module.css";
 
 const FORMAT_LABELS: Record<string, string> = {
-  online: "Онлайн", offline: "Офлайн", mixed: "Смешанный",
+  online: "Online", offline: "Offline", mixed: "Blended",
 };
 
 const STATUS_COLORS: Record<string, "success" | "info" | "warning"> = {
@@ -31,13 +31,13 @@ export default function TrainingsPage() {
 
   const handleExport = () => {
     const rows = trainings.map((t) => ({
-      "Название": t.title,
-      "Дата": t.date,
-      "Формат": FORMAT_LABELS[t.format] || t.format,
-      "Бизнес-юниты": t.business_units.map((b) => b.name).join(", "),
+      "Title": t.title,
+      "Date": t.date,
+      "Format": FORMAT_LABELS[t.format] || t.format,
+      "Business Units": t.business_units.map((b) => b.name).join(", "),
       "NPS": t.metric?.nps_score ?? "",
       "CSAT": t.metric?.csat_score ?? "",
-      "Участники": t.metric?.participants_count ?? 0,
+      "Participants": t.metric?.participants_count ?? 0,
     }));
     exportToExcel(rows, "trainings");
   };
@@ -47,37 +47,37 @@ export default function TrainingsPage() {
       <div className={styles.toolbar}>
         <input
           className={styles.search}
-          placeholder="Поиск по названию…"
+          placeholder="Search by title…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <select className={styles.select} value={format} onChange={(e) => setFormat(e.target.value)}>
-          <option value="">Все форматы</option>
-          <option value="online">Онлайн</option>
-          <option value="offline">Офлайн</option>
-          <option value="mixed">Смешанный</option>
+          <option value="">All formats</option>
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+          <option value="mixed">Blended</option>
         </select>
-        <button className={styles.exportBtn} onClick={handleExport}>Экспорт Excel</button>
+        <button className={styles.exportBtn} onClick={handleExport}>Export Excel</button>
       </div>
 
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Название</th>
-              <th>Дата</th>
-              <th>Формат</th>
-              <th>Классификация</th>
+              <th>Title</th>
+              <th>Date</th>
+              <th>Format</th>
+              <th>Classification</th>
               <th>NPS</th>
               <th>CSAT</th>
-              <th>Участников</th>
+              <th>Participants</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className={styles.center}>Загрузка…</td></tr>
+              <tr><td colSpan={7} className={styles.center}>Loading…</td></tr>
             ) : trainings.length === 0 ? (
-              <tr><td colSpan={7} className={styles.center}>Тренинги не найдены</td></tr>
+              <tr><td colSpan={7} className={styles.center}>No trainings found</td></tr>
             ) : trainings.map((t) => (
               <tr key={t.id}>
                 <td className={styles.titleCell}>{t.title}</td>
@@ -96,7 +96,7 @@ export default function TrainingsPage() {
           </tbody>
         </table>
       </div>
-      <div className={styles.footer}>Всего: {total}</div>
+      <div className={styles.footer}>Total: {total}</div>
     </div>
   );
 }

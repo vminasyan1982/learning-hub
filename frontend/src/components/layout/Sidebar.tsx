@@ -7,17 +7,17 @@ import styles from "./Sidebar.module.css";
 import { useAuthStore } from "@/store/authStore";
 
 const navItems = [
-  { to: "/", icon: LayoutDashboard, label: "Дашборд" },
+  { to: "/", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/portfolio", icon: Briefcase, label: "T&D Portfolio" },
-  { to: "/trainings", icon: BookOpen, label: "Тренинги" },
-  { to: "/registry", icon: ClipboardList, label: "Реестры" },
-  { to: "/trainers", icon: Users, label: "Тренеры" },
-  { to: "/trainees", icon: UserCheck, label: "Участники" },
-  { to: "/assessment", icon: BarChart3, label: "Ассессмент" },
+  { to: "/trainings", icon: BookOpen, label: "Trainings" },
+  { to: "/registry", icon: ClipboardList, label: "Registry" },
+  { to: "/trainers", icon: Users, label: "Trainers" },
+  { to: "/trainees", icon: UserCheck, label: "Participants" },
+  { to: "/assessment", icon: BarChart3, label: "Assessment" },
 ];
 
 const adminItems = [
-  { to: "/admin/users", icon: Settings, label: "Пользователи" },
+  { to: "/admin/users", icon: Settings, label: "Users" },
 ];
 
 export default function Sidebar() {
@@ -74,7 +74,7 @@ export default function Sidebar() {
             <div className={styles.userRole}>{user?.role}</div>
           </div>
         </div>
-        <button className={styles.logoutBtn} onClick={() => logout()} title="Выход">
+        <button className={styles.logoutBtn} onClick={() => logout()} title="Log out">
           <LogOut size={18} />
         </button>
       </div>

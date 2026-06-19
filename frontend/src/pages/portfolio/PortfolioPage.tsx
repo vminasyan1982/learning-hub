@@ -11,13 +11,13 @@ export default function PortfolioPage() {
     getPortfolio().then((r) => setItems(r.data.results)).finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>Загрузка…</div>;
+  if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>Loading…</div>;
 
   return (
     <div className={styles.grid}>
       {items.length === 0 && (
         <div style={{ gridColumn: "1/-1", textAlign: "center", color: "var(--color-gray-500)", padding: 40 }}>
-          Портфолио пусто. Добавьте элементы через Django Admin.
+          Portfolio is empty. Add items via Django Admin.
         </div>
       )}
       {items.map((item) => (
@@ -30,13 +30,13 @@ export default function PortfolioPage() {
           <div className={styles.body}>
             <h3 className={styles.promoName}>{item.promo_name}</h3>
             <div className={styles.internalName}>{item.internal_name}</div>
-            {item.skills && <div className={styles.skills}><strong>Навыки:</strong> {item.skills}</div>}
+            {item.skills && <div className={styles.skills}><strong>Skills:</strong> {item.skills}</div>}
             <div className={styles.meta}>
-              <span>Язык: {item.language}</span>
+              <span>Language: {item.language}</span>
             </div>
             {item.enrollment_info && (
               <div className={styles.enroll}>
-                <strong>Как записаться:</strong>
+                <strong>How to enroll:</strong>
                 <p>{item.enrollment_info}</p>
               </div>
             )}
