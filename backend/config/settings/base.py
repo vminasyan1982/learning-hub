@@ -89,6 +89,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "accounts.User"
+FRONTEND_URL = config("FRONTEND_URL", default="https://185.157.245.247")
 
 LANGUAGE_CODE = "ru-ru"
 TIME_ZONE = "Asia/Yerevan"

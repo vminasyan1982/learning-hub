@@ -68,6 +68,28 @@ class InvitationToken(models.Model):
         return f"Токен {str(self.token)[:8]}… [{status}] {self.note}"
 
 
+class LookupCategory(models.TextChoices):
+    DEPARTMENT = "department", "Отдел"
+    POSITION = "position", "Должность"
+    BUSINESS_UNIT = "business_unit", "Бизнес-юнит"
+
+
+class Lookup(models.Model):
+    category = models.CharField(max_length=50, choices=LookupCategory.choices)
+    name = models.CharField(max_length=255)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Справочник"
+        verbose_name_plural = "Справочники"
+        ordering = ["category", "order", "name"]
+        unique_together = [("category", "name")]
+
+    def __str__(self):
+        return f"{self.get_category_display()}: {self.name}"
+
+
 class RegistrationStatus(models.TextChoices):
     PENDING = "pending", "Ожидает рассмотрения"
     APPROVED = "approved", "Одобрен"

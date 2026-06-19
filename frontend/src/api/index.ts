@@ -21,6 +21,9 @@ export const changePassword = (data: { old_password: string; new_password: strin
 export const validateToken = (token: string) =>
   api.get<{ valid: boolean; error?: string }>(`/register/validate-token/?token=${token}`);
 
+export const getLookups = (category: "department" | "position" | "business_unit") =>
+  api.get<string[]>(`/register/lookups/?category=${category}`);
+
 export const submitRegistration = (data: object) =>
   api.post("/register/", data);
 

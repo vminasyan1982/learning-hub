@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from django_ratelimit.decorators import ratelimit
 from django.utils.decorators import method_decorator
 
-from .models import User, InvitationToken, RegistrationRequest, RegistrationStatus
+from .models import User, InvitationToken, RegistrationRequest, RegistrationStatus, Lookup, LookupCategory
 from .serializers import (
     UserSerializer, InvitationTokenSerializer, RegistrationRequestSerializer,
     RegistrationSubmitSerializer, ApproveRegistrationSerializer, DenyRegistrationSerializer,
@@ -32,6 +32,19 @@ def _make_username(first_name, last_name, email):
     while User.objects.filter(username=f"{base}{counter}").exists():
         counter += 1
     return f"{base}{counter}"
+
+
+# ── Lookups ───────────────────────────────────────────────────────────────────
+
+class LookupListView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        category = request.query_params.get("category")
+        qs = Lookup.objects.filter(is_active=True)
+        if category:
+            qs = qs.filter(category=category)
+        return Response(list(qs.values_list("name", flat=True)))
 
 
 # ── Registration flow ─────────────────────────────────────────────────────────

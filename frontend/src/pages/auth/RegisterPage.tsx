@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { validateToken, submitRegistration } from "@/api";
+import { validateToken, submitRegistration, getLookups } from "@/api";
 import { Zap, CheckCircle, XCircle } from "lucide-react";
 import styles from "./AuthPage.module.css";
 
@@ -20,6 +20,10 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [departments, setDepartments] = useState<string[]>([]);
+  const [positions, setPositions] = useState<string[]>([]);
+  const [businessUnits, setBusinessUnits] = useState<string[]>([]);
+
   const [form, setForm] = useState({
     first_name: "", last_name: "", email: "", phone: "",
     position: "", department: "", business_unit: "", requested_role: "viewer",
@@ -34,6 +38,12 @@ export default function RegisterPage() {
         setTokenError(err.response?.data?.error || "Ссылка недействительна или истекла.");
       });
   }, [token]);
+
+  useEffect(() => {
+    getLookups("department").then((r) => setDepartments(r.data)).catch(() => {});
+    getLookups("position").then((r) => setPositions(r.data)).catch(() => {});
+    getLookups("business_unit").then((r) => setBusinessUnits(r.data)).catch(() => {});
+  }, []);
 
   const set = (field: string, value: string) => setForm((prev) => ({ ...prev, [field]: value }));
 
@@ -125,16 +135,37 @@ export default function RegisterPage() {
           </div>
           <div className={styles.field}>
             <label>Должность *</label>
-            <input required value={form.position} onChange={(e) => set("position", e.target.value)} placeholder="Ваша должность" />
+            {positions.length > 0 ? (
+              <select required value={form.position} onChange={(e) => set("position", e.target.value)}>
+                <option value="">— выберите должность —</option>
+                {positions.map((p) => <option key={p} value={p}>{p}</option>)}
+              </select>
+            ) : (
+              <input required value={form.position} onChange={(e) => set("position", e.target.value)} placeholder="Ваша должность" />
+            )}
           </div>
           <div className={styles.grid2}>
             <div className={styles.field}>
               <label>Отдел *</label>
-              <input required value={form.department} onChange={(e) => set("department", e.target.value)} placeholder="Отдел" />
+              {departments.length > 0 ? (
+                <select required value={form.department} onChange={(e) => set("department", e.target.value)}>
+                  <option value="">— выберите отдел —</option>
+                  {departments.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              ) : (
+                <input required value={form.department} onChange={(e) => set("department", e.target.value)} placeholder="Отдел" />
+              )}
             </div>
             <div className={styles.field}>
               <label>Бизнес-юнит *</label>
-              <input required value={form.business_unit} onChange={(e) => set("business_unit", e.target.value)} placeholder="Бизнес-юнит" />
+              {businessUnits.length > 0 ? (
+                <select required value={form.business_unit} onChange={(e) => set("business_unit", e.target.value)}>
+                  <option value="">— выберите бизнес-юнит —</option>
+                  {businessUnits.map((b) => <option key={b} value={b}>{b}</option>)}
+                </select>
+              ) : (
+                <input required value={form.business_unit} onChange={(e) => set("business_unit", e.target.value)} placeholder="Бизнес-юнит" />
+              )}
             </div>
           </div>
           <div className={styles.field}>

@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
 from django.utils import timezone
-from .models import User, InvitationToken, RegistrationRequest, RegistrationStatus
+from django.conf import settings
+from .models import User, InvitationToken, RegistrationRequest, RegistrationStatus, Lookup, LookupCategory
 from .email import send_registration_approved, send_registration_denied
 from .views import _generate_temp_password, _make_username
 from django.contrib.auth.hashers import make_password
@@ -30,11 +31,15 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(InvitationToken)
 class InvitationTokenAdmin(admin.ModelAdmin):
-    list_display = ["short_token", "note", "created_by", "is_used", "status_badge", "expires_at", "created_at"]
+    list_display = ["short_token", "note", "created_by", "status_badge", "expires_at", "invite_link_col", "created_at"]
     list_filter = ["is_used"]
     search_fields = ["note", "created_by__username"]
     readonly_fields = ["token", "is_used", "expires_at", "created_at", "invite_link"]
     ordering = ["-created_at"]
+
+    def _get_invite_url(self, obj):
+        base = getattr(settings, "FRONTEND_URL", "https://185.157.245.247")
+        return f"{base}/register?token={obj.token}"
 
     @admin.display(description="Токен")
     def short_token(self, obj):
@@ -48,15 +53,37 @@ class InvitationTokenAdmin(admin.ModelAdmin):
             return format_html('<span style="color:#ED484E">истёк</span>')
         return format_html('<span style="color:#00A958">активен</span>')
 
+    @admin.display(description="Ссылка (копировать)")
+    def invite_link_col(self, obj):
+        url = self._get_invite_url(obj)
+        return format_html(
+            '<button type="button" onclick="navigator.clipboard.writeText(\'{url}\').then(()=>{{this.textContent=\'✓ скопировано\';setTimeout(()=>this.textContent=\'📋 копировать\',2000)}})" '
+            'style="cursor:pointer;background:#00A958;color:#fff;border:none;padding:3px 10px;border-radius:4px;font-size:12px">📋 копировать</button>',
+            url=url,
+        )
+
     @admin.display(description="Ссылка приглашения")
     def invite_link(self, obj):
-        url = f"https://185.157.245.247/register?token={obj.token}"
-        return format_html('<a href="{}" target="_blank">{}</a>', url, url)
+        url = self._get_invite_url(obj)
+        return format_html(
+            '<a href="{url}" target="_blank">{url}</a>'
+            '<br><small style="color:#888">⚠️ При открытии браузер покажет предупреждение SSL — нажмите «Дополнительно» → «Перейти на сайт»</small>',
+            url=url,
+        )
 
     def save_model(self, request, obj, form, change):
         if not change:
             obj.created_by = request.user
         super().save_model(request, obj, form, change)
+
+
+@admin.register(Lookup)
+class LookupAdmin(admin.ModelAdmin):
+    list_display = ["category", "name", "order", "is_active"]
+    list_filter = ["category", "is_active"]
+    search_fields = ["name"]
+    list_editable = ["order", "is_active"]
+    ordering = ["category", "order", "name"]
 
 
 @admin.register(RegistrationRequest)
