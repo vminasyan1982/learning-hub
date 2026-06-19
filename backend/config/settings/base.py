@@ -9,12 +9,12 @@ DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", cast=Csv())
 
 DJANGO_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.admin",
 ]
 
 THIRD_PARTY_APPS = [
