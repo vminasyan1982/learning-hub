@@ -29,6 +29,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route element={<ProtectedRoute />}>
+          <Route path="/change-password" element={<ChangePasswordPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/portfolio" element={<PortfolioPage />} />
@@ -38,7 +39,6 @@ export default function App() {
             <Route path="/trainees" element={<TraineesPage />} />
             <Route path="/assessment" element={<AssessmentPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
-            <Route path="/change-password" element={<ChangePasswordPage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
