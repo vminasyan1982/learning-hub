@@ -21,12 +21,15 @@ echo ""
 info "Updating apt packages..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
+# Note: python3-pip is installed for reference only.
+# All pip packages run inside Docker — never use pip system-wide on this server.
 apt-get install -y -qq \
     curl wget git ca-certificates gnupg lsb-release \
-    python3 python3-pip python3-venv \
+    python3 python3-venv \
     openssl nano htop ufw \
     2>/dev/null
-ok "System packages installed (python3 $(python3 --version 2>&1 | cut -d' ' -f2), pip $(pip3 --version | cut -d' ' -f2))"
+ok "System packages installed (python3 $(python3 --version 2>&1 | cut -d' ' -f2))"
+info "NOTE: pip is NOT used on this server — packages run inside Docker containers"
 
 # ── 2. Docker ─────────────────────────────────────
 if ! command -v docker &>/dev/null; then
