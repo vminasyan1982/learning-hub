@@ -44,8 +44,8 @@ echo -e "  No cache build: ${BUILD_NO_CACHE}"
 echo ""
 
 # ── 1. Pull latest code ──────────────────────────────────────
-step 1 "Pulling latest code..."
-ssh "$SERVER" "cd $APP_DIR && git pull origin main"
+step 1 "Syncing code from GitHub..."
+ssh "$SERVER" "cd $APP_DIR && git fetch origin main && git reset --hard origin/main"
 ok "Code updated"
 
 # ── 2. Stop old containers ───────────────────────────────────

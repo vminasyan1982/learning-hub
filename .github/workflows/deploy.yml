@@ -24,8 +24,9 @@ jobs:
             set -e
             cd /opt/learning-hub
 
-            echo "==> Pulling latest code..."
-            git pull origin main
+            echo "==> Syncing code from GitHub..."
+            git fetch origin main
+            git reset --hard origin/main
 
             echo "==> Stopping and removing old containers..."
             docker compose down --remove-orphans
