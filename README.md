@@ -19,7 +19,7 @@ Learning Hub gives the T&D team and management a single source of truth for all 
 | **External Registry** | External provider trainings with cost/budget tracking |
 | **Trainers** | Trainer profiles with NPS/CSAT ratings, types, and training history |
 | **Participants** | Who attended what, with training history |
-| **T&D Portfolio** | Public-facing catalogue of learning products with skills, language, and enrollment info |
+| **T&D Portfolio** | Course catalogue — click any card for detail modal (description, skills, participants count, LMS link) |
 | **Compliance** | Mandatory training tracking — per-training completion %, green/yellow/red status, deadlines |
 | **Budget** | Planned vs actual L&D spend by year and quarter, variance tracking |
 | **Assessment Centre** | Planned — requirements in progress |

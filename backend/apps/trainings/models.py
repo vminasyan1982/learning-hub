@@ -110,7 +110,8 @@ class BudgetPlan(models.Model):
     business_unit = models.CharField(max_length=255, blank=True, verbose_name="Бизнес-юнит (пусто = все)")
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="total", verbose_name="Категория")
     planned_amount = models.DecimalField(max_digits=14, decimal_places=2, verbose_name="Плановый бюджет")
-    currency = models.CharField(max_length=10, default="AMD", verbose_name="Валюта")
+    CURRENCY_CHOICES = [("USD", "USD ($)"), ("EUR", "EUR (€)"), ("RUB", "RUB (₽)"), ("AMD", "AMD")]
+    currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default="USD", verbose_name="Валюта")
     notes = models.TextField(blank=True, verbose_name="Примечания")
 
     class Meta:

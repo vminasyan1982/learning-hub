@@ -155,6 +155,10 @@ export interface PortfolioItem {
   skills: string;
   language: string;
   enrollment_info: string;
+  description: string;
+  duration: string;
+  lms_url: string;
+  participants_count: number;
   is_active: boolean;
   order: number;
 }

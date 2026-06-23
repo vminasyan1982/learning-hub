@@ -9,21 +9,33 @@
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  cursor: pointer;
   transition: var(--transition);
 }
 
-.card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
 
 .banner { height: 160px; overflow: hidden; background: var(--color-gray-100); }
 .banner img { width: 100%; height: 100%; object-fit: cover; }
 
+.bannerPlaceholder {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gray-50);
+}
+
 .body { padding: 16px 20px 20px; }
 
 .promoName {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .internalName {
@@ -32,24 +44,162 @@
   margin-bottom: 10px;
 }
 
-.skills {
-  font-size: 12px;
-  color: var(--color-gray-700);
-  margin-bottom: 8px;
-}
-
-.meta {
-  font-size: 11px;
-  color: var(--color-gray-400);
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-bottom: 10px;
 }
 
-.enroll {
-  font-size: 12px;
-  color: var(--color-gray-700);
-  background: var(--color-gray-50);
-  border-radius: var(--border-radius);
-  padding: 10px 12px;
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-gray-600);
+  background: var(--color-gray-100);
+  border-radius: 20px;
+  padding: 3px 8px;
 }
 
-.enroll p { margin-top: 4px; font-weight: var(--font-weight-light); color: var(--color-gray-600); }
+.skills {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clickHint {
+  font-size: 11px;
+  color: var(--color-primary);
+  opacity: 0.6;
+  margin-top: 8px;
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-gray-600);
+}
+
+.closeBtn:hover { background: var(--color-gray-100); }
+
+.modalBanner { height: 200px; overflow: hidden; }
+.modalBanner img { width: 100%; height: 100%; object-fit: cover; }
+
+.modalBody { padding: 24px; }
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin-bottom: 4px;
+}
+
+.modalSub {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin-bottom: 16px;
+}
+
+.modalMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-gray-600);
+}
+
+.section { margin-bottom: 18px; }
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gray-400);
+  margin-bottom: 8px;
+}
+
+.sectionText {
+  font-size: 13px;
+  color: var(--color-gray-700);
+  line-height: 1.6;
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skillTag {
+  font-size: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.lmsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 20px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.lmsBtn:hover { opacity: 0.88; }
