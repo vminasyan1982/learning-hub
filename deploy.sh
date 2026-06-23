@@ -30,9 +30,12 @@ ok()    { echo -e "${GREEN}✓ $1${RESET}"; }
 warn()  { echo -e "${YELLOW}⚠ $1${RESET}"; }
 fail()  { echo -e "${RED}✗ $1${RESET}"; exit 1; }
 
+ARG1="${1:-}"
+ARG2="${2:-}"
+
 TOTAL=7
-[ "$1" == "migrate" ] || [ "$2" == "migrate" ] && TOTAL=8
-[ "$1" == "seed" ]    || [ "$2" == "seed" ]    && TOTAL=9
+[ "$ARG1" == "migrate" ] || [ "$ARG2" == "migrate" ] && TOTAL=8
+[ "$ARG1" == "seed" ]    || [ "$ARG2" == "seed" ]    && TOTAL=9
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════╗${RESET}"
@@ -87,7 +90,7 @@ ssh "$SERVER" "cd $APP_DIR && docker compose exec -T backend python manage.py co
 ok "Static files collected"
 
 # ── 6. Migrations (optional) ─────────────────────────────────
-if [[ "${1:-}" == "migrate" || "${2:-}" == "migrate" ]]; then
+if [[ "$ARG1" == "migrate" || "$ARG2" == "migrate" ]]; then
   step 6 "Running database migrations..."
   ssh "$SERVER" "cd $APP_DIR && docker compose exec -T backend python manage.py migrate --noinput"
   ok "Migrations applied"
@@ -97,7 +100,7 @@ else
 fi
 
 # ── 7. Seed test data (optional) ─────────────────────────────
-if [[ "${1:-}" == "seed" || "${2:-}" == "seed" ]]; then
+if [[ "$ARG1" == "seed" || "$ARG2" == "seed" ]]; then
   step 7 "Seeding test data..."
   ssh "$SERVER" "cd $APP_DIR && docker compose exec -T backend python manage.py seed_test_data"
   ok "Test data seeded"
@@ -119,5 +122,5 @@ echo ""
 echo -e "  Контейнеры пересозданы чисто"
 echo -e "  Образы пересобраны (с кешем = быстро)"
 echo -e "  Статика собрана"
-echo -e "  БД не тронута $([ "${1:-}" == "migrate" ] && echo "(миграции применены)" || echo "(миграции пропущены)")"
+echo -e "  БД не тронута $([ "$ARG1" == "migrate" ] && echo "(миграции применены)" || echo "(миграции пропущены)")"
 echo ""
