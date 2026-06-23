@@ -24,19 +24,24 @@ jobs:
             set -e
             cd /opt/learning-hub
 
-            echo "Pulling latest code..."
+            echo "==> Pulling latest code..."
             git pull origin main
 
-            echo "Rebuilding containers..."
-            docker compose up --build -d --remove-orphans
+            echo "==> Stopping and removing old containers..."
+            docker compose down --remove-orphans
 
-            echo "Running migrations..."
-            docker compose exec -T backend python manage.py migrate --noinput
+            echo "==> Building and starting fresh containers..."
+            docker compose up --build -d
 
-            echo "Collecting static files..."
-            docker compose exec -T backend python manage.py collectstatic --noinput
+            echo "==> Collecting static files..."
+            docker compose exec -T backend python manage.py collectstatic --noinput --clear
 
-            echo "Cleaning up old images..."
+            echo "==> Cleaning up unused images and build cache..."
             docker image prune -f
+            docker builder prune -f
 
+            echo ""
             echo "Deploy complete!"
+            echo "NOTE: Migrations are NOT applied automatically."
+            echo "Run manually if needed:"
+            echo "  docker compose exec backend python manage.py migrate"
