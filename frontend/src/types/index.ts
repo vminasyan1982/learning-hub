@@ -197,3 +197,34 @@ export interface PaginatedResponse<T> {
   previous: string | null;
   results: T[];
 }
+
+export interface ComplianceTraining {
+  id: number;
+  title: string;
+  deadline: string | null;
+  completed: number;
+  total: number;
+  compliance_pct: number;
+  status: "green" | "yellow" | "red";
+}
+
+export interface ComplianceSummary {
+  total_mandatory: number;
+  overall_compliance_pct: number;
+  total_trainees: number;
+  trainings: ComplianceTraining[];
+}
+
+export interface BudgetQuarter {
+  quarter: string;
+  planned: number;
+  actual: number;
+}
+
+export interface BudgetSummary {
+  year: string;
+  total_planned: number;
+  total_actual: number;
+  variance: number;
+  by_quarter: BudgetQuarter[];
+}

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Avg, Count
 from django.db.models.functions import TruncQuarter, TruncMonth
-from .models import Training, TrainingMetric, BusinessUnit
+from .models import Training, TrainingMetric, BusinessUnit, BudgetPlan
 from apps.trainees.models import TrainingParticipation
 from apps.trainers.models import Trainer
 from apps.registry.models import InternalRegistryEntry, RegistryStatus
@@ -128,3 +128,80 @@ class AnalyticsTrendsView(APIView):
             if item["period"]
         ]
         return Response(data)
+
+
+class ComplianceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from apps.trainees.models import Trainee, TrainingParticipation
+
+        mandatory = Training.objects.filter(is_mandatory=True)
+        total_mandatory = mandatory.count()
+
+        if total_mandatory == 0:
+            return Response({
+                "total_mandatory": 0,
+                "overall_compliance_pct": 0,
+                "trainings": [],
+            })
+
+        total_trainees = Trainee.objects.filter(is_active=True).count()
+
+        trainings_data = []
+        for t in mandatory:
+            completed = TrainingParticipation.objects.filter(
+                training=t, attended=True
+            ).count()
+            pct = round(completed / total_trainees * 100) if total_trainees else 0
+            trainings_data.append({
+                "id": t.id,
+                "title": t.title,
+                "deadline": str(t.compliance_deadline) if t.compliance_deadline else None,
+                "completed": completed,
+                "total": total_trainees,
+                "compliance_pct": pct,
+                "status": "green" if pct >= 90 else "yellow" if pct >= 70 else "red",
+            })
+
+        overall = round(sum(d["compliance_pct"] for d in trainings_data) / total_mandatory) if total_mandatory else 0
+
+        return Response({
+            "total_mandatory": total_mandatory,
+            "overall_compliance_pct": overall,
+            "total_trainees": total_trainees,
+            "trainings": trainings_data,
+        })
+
+
+class BudgetView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from apps.registry.models import ExternalRegistryEntry
+        from django.db.models import Sum
+        import datetime
+
+        year = request.query_params.get("year", str(datetime.date.today().year))
+
+        plans = BudgetPlan.objects.filter(year=year)
+        total_planned = float(plans.aggregate(s=Sum("planned_amount"))["s"] or 0)
+
+        actual_external = float(
+            ExternalRegistryEntry.objects.filter(
+                date__year=year
+            ).aggregate(s=Sum("cost"))["s"] or 0
+        )
+
+        by_quarter = []
+        for q in range(1, 5):
+            q_planned = float(plans.filter(quarter=q).aggregate(s=Sum("planned_amount"))["s"] or 0)
+            by_quarter.append({"quarter": f"Q{q}", "planned": q_planned, "actual": 0})
+
+        return Response({
+            "year": year,
+            "total_planned": total_planned,
+            "total_actual": actual_external,
+            "variance": total_planned - actual_external,
+            "by_quarter": by_quarter,
+        })

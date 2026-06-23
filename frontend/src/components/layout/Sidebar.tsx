@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, BookOpen, ClipboardList, Users, UserCheck,
-  Briefcase, BarChart3, Settings, LogOut, Zap,
+  Briefcase, BarChart3, Settings, LogOut, Zap, ShieldCheck, DollarSign,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 import { useAuthStore } from "@/store/authStore";
@@ -15,6 +15,8 @@ const navItems = [
   { to: "/trainers", icon: Users, label: "Trainers" },
   { to: "/trainees", icon: UserCheck, label: "Participants" },
   { to: "/assessment", icon: BarChart3, label: "Assessment" },
+  { to: "/compliance", icon: ShieldCheck, label: "Compliance" },
+  { to: "/budget", icon: DollarSign, label: "Budget" },
 ];
 
 const adminItems = [

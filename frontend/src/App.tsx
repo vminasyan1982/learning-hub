@@ -14,6 +14,8 @@ import TrainersPage from "@/pages/trainers/TrainersPage";
 import TraineesPage from "@/pages/trainees/TraineesPage";
 import PortfolioPage from "@/pages/portfolio/PortfolioPage";
 import AssessmentPage from "@/pages/AssessmentPage";
+import CompliancePage from "@/pages/compliance/CompliancePage";
+import BudgetPage from "@/pages/budget/BudgetPage";
 import AdminUsersPage from "@/pages/admin/AdminUsersPage";
 import ChangePasswordPage from "@/pages/auth/ChangePasswordPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
@@ -42,6 +44,8 @@ export default function App() {
             <Route path="/trainers" element={<TrainersPage />} />
             <Route path="/trainees" element={<TraineesPage />} />
             <Route path="/assessment" element={<AssessmentPage />} />
+            <Route path="/compliance" element={<CompliancePage />} />
+            <Route path="/budget" element={<BudgetPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>

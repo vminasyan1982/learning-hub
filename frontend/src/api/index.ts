@@ -2,7 +2,7 @@ import api from "./client";
 import type {
   AuthTokens, User, InvitationToken, RegistrationRequest,
   Training, InternalRegistryEntry, ExternalRegistryEntry, Trainer, Trainee, PortfolioItem,
-  AnalyticsSummary, TrendPoint, PaginatedResponse,
+  AnalyticsSummary, TrendPoint, PaginatedResponse, ComplianceSummary, BudgetSummary,
 } from "@/types";
 
 // Auth
@@ -87,3 +87,7 @@ export const createTrainee = (data: object) => api.post<Trainee>("/trainees/", d
 export const getPortfolio = () => api.get<PaginatedResponse<PortfolioItem>>("/portfolio/");
 export const createPortfolioItem = (data: object) => api.post<PortfolioItem>("/portfolio/", data);
 export const updatePortfolioItem = (id: number, data: object) => api.patch<PortfolioItem>(`/portfolio/${id}/`, data);
+
+// Compliance & Budget
+export const getCompliance = () => api.get<ComplianceSummary>("/analytics/compliance/");
+export const getBudget = (year?: string) => api.get<BudgetSummary>("/analytics/budget/", { params: { year } });

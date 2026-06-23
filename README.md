@@ -20,6 +20,8 @@ Learning Hub gives the T&D team and management a single source of truth for all 
 | **Trainers** | Trainer profiles with NPS/CSAT ratings, types, and training history |
 | **Participants** | Who attended what, with training history |
 | **T&D Portfolio** | Public-facing catalogue of learning products with skills, language, and enrollment info |
+| **Compliance** | Mandatory training tracking — per-training completion %, green/yellow/red status, deadlines |
+| **Budget** | Planned vs actual L&D spend by year and quarter, variance tracking |
 | **Assessment Centre** | Planned — requirements in progress |
 
 ---
@@ -141,7 +143,8 @@ To avoid browser warnings: import `nginx/ssl/cert.pem` as a trusted CA in your b
 
 | Version | Date | Changes |
 |---|---|---|
-| Current | Jun 2026 | English UI, dark mode, user menu, KPI hover details, expandable table rows, External Registry split, Business Value % and Projects in Progress KPIs, NPS/CSAT as %, per-year trend filter |
+| Current | Jun 2026 | Sprint 1: Compliance tracking module (mandatory trainings, progress bars, RAG status), Budget module (planned vs actual by quarter, variance), BudgetPlan model + Django Admin |
+| Jun 2026 | Jun 2026 | English UI, dark mode, user menu, KPI hover details, expandable table rows, External Registry split, Business Value % and Projects in Progress KPIs, NPS/CSAT as %, per-year trend filter |
 | v0.4 | Jun 2026 | Requirements finalized (v0.4 spec), Assessment Centre and External Registry fields TBD |
 | v0.3 | — | Learning Hub rebrand, Mulish fonts, T&D Portfolio, invitation system |
 | v0.2 | — | 6 KPI metrics with targets, role-based access |

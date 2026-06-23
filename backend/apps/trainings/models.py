@@ -56,6 +56,8 @@ class Training(models.Model):
     drive_url = models.URLField(blank=True)
     feedback_url = models.URLField(blank=True)
     is_internal = models.BooleanField(default=True, help_text="Внутренний / Внешний")
+    is_mandatory = models.BooleanField(default=False, verbose_name="Обязательный", help_text="Обязателен для прохождения всеми сотрудниками")
+    compliance_deadline = models.DateField(null=True, blank=True, verbose_name="Срок выполнения (обязательный)")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -91,3 +93,33 @@ class TrainingMetric(models.Model):
 
     def __str__(self):
         return f"Метрика: {self.training.title}"
+
+
+class BudgetPlan(models.Model):
+    CATEGORY_CHOICES = [
+        ("internal", "Internal T&D"),
+        ("external", "External Training"),
+        ("total", "Total L&D"),
+    ]
+    year = models.PositiveIntegerField(verbose_name="Год")
+    quarter = models.PositiveSmallIntegerField(
+        null=True, blank=True,
+        choices=[(1, "Q1"), (2, "Q2"), (3, "Q3"), (4, "Q4")],
+        verbose_name="Квартал (пусто = весь год)"
+    )
+    business_unit = models.CharField(max_length=255, blank=True, verbose_name="Бизнес-юнит (пусто = все)")
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="total", verbose_name="Категория")
+    planned_amount = models.DecimalField(max_digits=14, decimal_places=2, verbose_name="Плановый бюджет")
+    currency = models.CharField(max_length=10, default="AMD", verbose_name="Валюта")
+    notes = models.TextField(blank=True, verbose_name="Примечания")
+
+    class Meta:
+        verbose_name = "Бюджетный план"
+        verbose_name_plural = "Бюджетные планы"
+        ordering = ["-year", "quarter", "business_unit"]
+        unique_together = [("year", "quarter", "business_unit", "category")]
+
+    def __str__(self):
+        q = f" Q{self.quarter}" if self.quarter else ""
+        bu = f" · {self.business_unit}" if self.business_unit else ""
+        return f"{self.category} {self.year}{q}{bu}: {self.planned_amount} {self.currency}"
