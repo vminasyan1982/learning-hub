@@ -9,6 +9,7 @@ import RegisterPage from "@/pages/auth/RegisterPage";
 import DashboardPage from "@/pages/dashboard/DashboardPage";
 import TrainingsPage from "@/pages/trainings/TrainingsPage";
 import RegistryPage from "@/pages/registry/RegistryPage";
+import ExternalRegistryPage from "@/pages/registry/ExternalRegistryPage";
 import TrainersPage from "@/pages/trainers/TrainersPage";
 import TraineesPage from "@/pages/trainees/TraineesPage";
 import PortfolioPage from "@/pages/portfolio/PortfolioPage";
@@ -35,7 +36,9 @@ export default function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/trainings" element={<TrainingsPage />} />
-            <Route path="/registry" element={<RegistryPage />} />
+            <Route path="/registry" element={<Navigate to="/registry/internal" replace />} />
+            <Route path="/registry/internal" element={<RegistryPage />} />
+            <Route path="/registry/external" element={<ExternalRegistryPage />} />
             <Route path="/trainers" element={<TrainersPage />} />
             <Route path="/trainees" element={<TraineesPage />} />
             <Route path="/assessment" element={<AssessmentPage />} />

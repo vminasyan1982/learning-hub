@@ -91,6 +91,17 @@ export interface Training {
 export type RegistryStatus = "not_started" | "in_progress" | "on_hold" | "completed" | "at_risk" | "cancelled" | "done";
 export type RegistryCenter = "td" | "assessment";
 
+export interface ExternalRegistryEntry {
+  id: number;
+  title: string;
+  provider: string;
+  date: string | null;
+  cost: number | null;
+  currency: string;
+  notes: string;
+  created_at: string;
+}
+
 export interface InternalRegistryEntry {
   id: number;
   request_date: string;
@@ -154,8 +165,10 @@ export interface AnalyticsSummary {
   offline_count: number;
   mixed_count: number;
   avg_nps: number;
+  avg_nps_pct: number;
   nps_target_met: number;
   avg_csat: number;
+  avg_csat_pct: number;
   csat_target_met: number;
   avg_lh_standards: number;
   avg_trainer_rating: number;
@@ -166,6 +179,9 @@ export interface AnalyticsSummary {
   internal_trainers: number;
   external_trainers: number;
   total_metrics: number;
+  business_value_pct: number;
+  projects_in_progress: number;
+  bu_breakdown: Array<{ name: string; project_count: number }>;
 }
 
 export interface TrendPoint {

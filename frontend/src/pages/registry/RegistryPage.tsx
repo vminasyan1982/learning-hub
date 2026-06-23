@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
 import { getInternalRegistry } from "@/api";
+import { exportToExcel } from "@/utils/export";
 import type { InternalRegistryEntry, RegistryStatus } from "@/types";
 import Badge from "@/components/ui/Badge";
 import styles from "../trainings/TrainingsPage.module.css";
@@ -20,6 +22,7 @@ export default function RegistryPage() {
   const [status, setStatus] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     setLoading(true);
@@ -27,6 +30,30 @@ export default function RegistryPage() {
       .then((r) => { setEntries(r.data.results); setTotal(r.data.count); })
       .finally(() => setLoading(false));
   }, [status, search]);
+
+  const toggle = (id: number) => setExpanded((prev) => {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+
+  const handleExport = () => {
+    const rows = entries.map((e) => ({
+      "Title": e.title,
+      "Date": e.request_date,
+      "Center": e.center === "td" ? "T&D" : "Assessment",
+      "Format": e.format,
+      "Status": STATUS_MAP[e.status]?.label || e.status,
+      "Project Manager": e.project_manager,
+      "Developers": e.developers,
+      "Deadline": e.deadline || "",
+      "On time": e.completed_on_time === null ? "" : e.completed_on_time ? "Yes" : "No",
+      "Comments": e.comments,
+      "Asana": e.asana_url,
+      "Materials": e.materials_url,
+    }));
+    exportToExcel(rows, "internal-registry");
+  };
 
   return (
     <div className={styles.page}>
@@ -43,12 +70,14 @@ export default function RegistryPage() {
             <option key={k} value={k}>{v.label}</option>
           ))}
         </select>
+        <button className={styles.exportBtn} onClick={handleExport}>Export Excel</button>
       </div>
 
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <thead>
             <tr>
+              <th style={{ width: 24 }} />
               <th>Request title</th>
               <th>Date</th>
               <th>Center</th>
@@ -60,21 +89,57 @@ export default function RegistryPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className={styles.center}>Loading…</td></tr>
+              <tr><td colSpan={8} className={styles.center}>Loading…</td></tr>
             ) : entries.length === 0 ? (
-              <tr><td colSpan={7} className={styles.center}>No records found</td></tr>
+              <tr><td colSpan={8} className={styles.center}>No records found</td></tr>
             ) : entries.map((e) => {
               const s = STATUS_MAP[e.status] || { label: e.status, variant: "default" as const };
+              const isOpen = expanded.has(e.id);
               return (
-                <tr key={e.id}>
-                  <td className={styles.titleCell}>{e.title}</td>
-                  <td>{e.request_date}</td>
-                  <td><Badge variant="info">{e.center === "td" ? "T&D" : "Assessment"}</Badge></td>
-                  <td><Badge variant={s.variant}>{s.label}</Badge></td>
-                  <td>{e.project_manager || "—"}</td>
-                  <td>{e.deadline || "—"}</td>
-                  <td>{e.completed_on_time === null ? "—" : e.completed_on_time ? "✓" : "✗"}</td>
-                </tr>
+                <>
+                  <tr key={e.id} onClick={() => toggle(e.id)} style={{ cursor: "pointer" }}>
+                    <td>
+                      {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                    </td>
+                    <td className={styles.titleCell}>{e.title}</td>
+                    <td>{e.request_date}</td>
+                    <td><Badge variant="info">{e.center === "td" ? "T&D" : "Assessment"}</Badge></td>
+                    <td><Badge variant={s.variant}>{s.label}</Badge></td>
+                    <td>{e.project_manager || "—"}</td>
+                    <td>{e.deadline || "—"}</td>
+                    <td>{e.completed_on_time === null ? "—" : e.completed_on_time ? "✓" : "✗"}</td>
+                  </tr>
+                  {isOpen && (
+                    <tr key={`${e.id}-detail`} className={styles.expandedRow}>
+                      <td colSpan={8}>
+                        <div className={styles.expandedContent}>
+                          {e.format && (
+                            <div className={styles.expandedSection}>
+                              <span className={styles.expandedLabel}>Format:</span>
+                              <span className={styles.expandedText}>{e.format}</span>
+                            </div>
+                          )}
+                          {e.developers && (
+                            <div className={styles.expandedSection}>
+                              <span className={styles.expandedLabel}>Developers / Responsible:</span>
+                              <span className={styles.expandedText}>{e.developers}</span>
+                            </div>
+                          )}
+                          {e.comments && (
+                            <div className={styles.expandedSection}>
+                              <span className={styles.expandedLabel}>Comments:</span>
+                              <span className={styles.expandedText}>{e.comments}</span>
+                            </div>
+                          )}
+                          <div className={styles.expandedLinks}>
+                            {e.asana_url && <a href={e.asana_url} target="_blank" rel="noreferrer" className={styles.link}><ExternalLink size={12} /> Asana</a>}
+                            {e.materials_url && <a href={e.materials_url} target="_blank" rel="noreferrer" className={styles.link}><ExternalLink size={12} /> Materials</a>}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
               );
             })}
           </tbody>

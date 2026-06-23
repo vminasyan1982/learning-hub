@@ -1,7 +1,7 @@
 import api from "./client";
 import type {
   AuthTokens, User, InvitationToken, RegistrationRequest,
-  Training, InternalRegistryEntry, Trainer, Trainee, PortfolioItem,
+  Training, InternalRegistryEntry, ExternalRegistryEntry, Trainer, Trainee, PortfolioItem,
   AnalyticsSummary, TrendPoint, PaginatedResponse,
 } from "@/types";
 
@@ -68,6 +68,9 @@ export const updateInternalEntry = (id: number, data: object) =>
   api.patch<InternalRegistryEntry>(`/registry/internal/${id}/`, data);
 export const deleteInternalEntry = (id: number) =>
   api.delete(`/registry/internal/${id}/`);
+
+export const getExternalRegistry = (params?: object) =>
+  api.get<PaginatedResponse<ExternalRegistryEntry>>("/registry/external/", { params });
 
 // Trainers
 export const getTrainers = (params?: object) =>
