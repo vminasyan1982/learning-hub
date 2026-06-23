@@ -1,41 +1,51 @@
 # Learning Hub — T&D Analytics Dashboard
 
-> Internal analytics platform for the Training & Development team and Assessment Centre.  
-> Tracks trainings, trainers, participants, projects, and KPIs in one place.
+> Единая внутренняя платформа для команды Training & Development и Assessment Centre.  
+> Все тренинги, тренеры, участники, метрики и планы развития — в одном месте.
 
 **Live:** `https://185.157.245.247` · **Admin:** `https://185.157.245.247/admin/`
 
 ---
 
-## What it does
+## Для кого и зачем
 
-Learning Hub gives the T&D team and management a single source of truth for all learning activity:
+Learning Hub решает главную проблему T&D команд — данные разбросаны по Asana, Excel, LMS и почте. Платформа объединяет всё в одном месте и даёт руководству реальную картину: что делается, сколько стоит, какой результат.
 
-| Module | Description |
-|---|---|
-| **Dashboard** | 6 KPI cards (NPS%, CSAT%, Projects in Progress, Business Value, Participants, Business Units) with trend charts and per-period filtering |
-| **Trainings** | Full catalogue of classified training projects with metrics, links (LMS, Asana, Drive), expandable detail rows |
-| **Internal Registry** | Journal of all department requests — status tracking, project managers, developers, deadlines, comments |
-| **External Registry** | External provider trainings with cost/budget tracking |
-| **Trainers** | Trainer profiles with NPS/CSAT ratings, types, and training history |
-| **Participants** | Who attended what, with training history |
-| **T&D Portfolio** | Course catalogue — click any card for detail modal (description, skills, participants count, LMS link) |
-| **Compliance** | Mandatory training tracking — per-training completion %, green/yellow/red status, deadlines |
-| **Budget** | Planned vs actual L&D spend by year and quarter, variance tracking |
-| **Assessment Centre** | Planned — requirements in progress |
+**Польза для T&D команды:** меньше времени на ручные отчёты, больше времени на содержание.  
+**Польза для бизнеса:** прозрачность инвестиций в обучение и их влияние на результат.
 
 ---
 
-## KPIs tracked
+## Модули платформы
 
-| Metric | Target |
-|---|---|
-| NPS | ≥ 60% |
-| CSAT | ≥ 80% |
-| Business Value compliance | ≥ 70% |
-| LH Standards | ≥ 4.5 / 90% |
-| Trainer quarterly rating | ≥ 4.5 / 90% |
-| Discipline | No formal warnings |
+| Модуль | Что делает | Польза |
+|---|---|---|
+| **Dashboard** | 6 KPI-карточек (NPS%, CSAT%, Проекты в работе, Business Value, Участники, БЮ) с трендами и фильтром по году | Руководитель видит состояние T&D одним взглядом — без Excel-отчётов |
+| **Trainings** | Полный каталог тренингов с метриками, ссылками (LMS, Asana, Drive), фильтром по формату и поиском | Единый реестр всех обучений с историей и результатами |
+| **Internal Registry** | Журнал заявок от бизнес-подразделений — статус, ответственный, дедлайн, комментарии | Ни одна заявка не теряется, видна стадия исполнения |
+| **External Registry** | Внешние провайдеры, стоимость, даты — с выгрузкой в Excel | Контроль расходов на внешнее обучение |
+| **Trainers** | Профили тренеров с NPS/CSAT рейтингами и историей тренингов | Понимать кто лучший тренер и по каким направлениям |
+| **Participants** | Кто что прошёл, история участий | Отчёт по любому сотруднику за секунды |
+| **T&D Portfolio** | Витрина курсов с описанием, навыками, LMS-ссылкой — клик открывает детали | Сотрудники сами находят нужный курс, снижается нагрузка на T&D |
+| **Compliance** | Обязательные тренинги: % прохождения, дедлайны, RAG-статус (🟢🟡🔴) | Контроль выполнения регуляторных и корпоративных требований |
+| **Budget** | Плановый vs фактический бюджет по кварталам, отклонение, выбор валюты | Финансовая прозрачность L&D для CFO и HRD |
+| **Skills Matrix** | Тепловая карта навыков команды: сотрудник × навык, уровень 0–4 | Видно где пробелы, на какие тренинги направлять людей |
+| **My IDP** | Индивидуальный план развития: цели, связанные тренинги, прогресс | Каждый сотрудник видит свой путь, руководитель — прогресс команды |
+| **ROI Calculator** | Инвестиции в обучение, стоимость на участника, NPS/CSAT vs бенчмарк | Бизнес-обоснование бюджета T&D для топ-менеджмента |
+| **Assessment Centre** | В разработке | — |
+
+---
+
+## KPI и бенчмарки
+
+| Метрика | Цель | Что измеряет |
+|---|---|---|
+| NPS | ≥ 3.0 / 60% | Готовность рекомендовать тренинг |
+| CSAT | ≥ 4.3 / 80% | Удовлетворённость участников |
+| Business Value | ≥ 70% | Применимость обучения на практике |
+| LH Standards | ≥ 4.5 / 90% | Соответствие стандартам Learning Hub |
+| Trainer Rating | ≥ 4.5 / 90% | Качество работы тренера |
+| Compliance | 100% | Прохождение обязательных тренингов в срок |
 
 ---
 
@@ -143,8 +153,9 @@ To avoid browser warnings: import `nginx/ssl/cert.pem` as a trusted CA in your b
 
 | Version | Date | Changes |
 |---|---|---|
-| Current | Jun 2026 | Sprint 1: Compliance tracking module (mandatory trainings, progress bars, RAG status), Budget module (planned vs actual by quarter, variance), BudgetPlan model + Django Admin |
-| Jun 2026 | Jun 2026 | English UI, dark mode, user menu, KPI hover details, expandable table rows, External Registry split, Business Value % and Projects in Progress KPIs, NPS/CSAT as %, per-year trend filter |
+| Current | Jun 2026 | Sprint 2: Skills Matrix (heatmap), IDP (индивидуальные планы развития), ROI Calculator (инвестиции vs результат), Training↔Trainer M2M связь |
+| Jun 2026 | Jun 2026 | Sprint 1: Compliance (обязательные тренинги, RAG), Budget (план/факт по кварталам), валюта USD/EUR, Portfolio modal, filter race-condition fix |
+| Jun 2026 | Jun 2026 | English UI, dark mode, user menu, KPI hover details, expandable rows, External Registry, Business Value %, NPS/CSAT % |
 | v0.4 | Jun 2026 | Requirements finalized (v0.4 spec), Assessment Centre and External Registry fields TBD |
 | v0.3 | — | Learning Hub rebrand, Mulish fonts, T&D Portfolio, invitation system |
 | v0.2 | — | 6 KPI metrics with targets, role-based access |
