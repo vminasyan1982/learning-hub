@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -24,24 +21,30 @@ jobs:
             set -e
             cd /opt/learning-hub
 
-            echo "==> Syncing code from GitHub..."
+            echo "==> [1/7] Syncing code from GitHub..."
             git fetch origin main
             git reset --hard origin/main
 
-            echo "==> Stopping and removing old containers..."
+            echo "==> [2/7] Stopping old containers..."
             docker compose down --remove-orphans
 
-            echo "==> Building and starting fresh containers..."
+            echo "==> [3/7] Building and starting containers..."
             docker compose up --build -d
 
-            echo "==> Collecting static files..."
-            docker compose exec -T backend python manage.py collectstatic --noinput --clear
+            echo "==> [4/7] Waiting for backend..."
+            sleep 12
 
-            echo "==> Cleaning up unused images..."
+            echo "==> [5/7] Creating missing migrations (if any)..."
+            docker compose exec -T backend python manage.py makemigrations --noinput
+            for app in accounts trainings registry trainers trainees portfolio skills idp; do
+              docker compose cp backend:/app/backend/apps/$app/migrations/. ./backend/apps/$app/migrations/ 2>/dev/null || true
+            done
+
+            echo "==> [6/7] Applying migrations..."
+            docker compose exec -T backend python manage.py migrate --noinput
+
+            echo "==> [7/7] Cleaning up old images..."
             docker image prune -f
 
             echo ""
-            echo "Deploy complete!"
-            echo "NOTE: Migrations are NOT applied automatically."
-            echo "Run manually if needed:"
-            echo "  docker compose exec backend python manage.py migrate"
+            echo "✓ Deploy complete! https://185.157.245.247"
