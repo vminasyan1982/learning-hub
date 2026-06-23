@@ -45,14 +45,22 @@ export default function TrainingsPage() {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
-  const load = () => {
+  useEffect(() => {
+    let cancelled = false;
     setLoading(true);
-    getTrainings({ search, format: format || undefined })
-      .then((r) => { setTrainings(r.data.results); setTotal(r.data.count); })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => { load(); }, [search, format]);
+    getTrainings({
+      search: search || undefined,
+      format: format || undefined,
+    })
+      .then((r) => {
+        if (!cancelled) {
+          setTrainings(r.data.results);
+          setTotal(r.data.count);
+        }
+      })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [search, format]);
 
   const toggle = (id: number) => setExpanded((prev) => {
     const next = new Set(prev);

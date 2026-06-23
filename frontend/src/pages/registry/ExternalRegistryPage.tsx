@@ -11,10 +11,12 @@ export default function ExternalRegistryPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
-    getExternalRegistry({ search })
-      .then((r) => { setEntries(r.data.results); setTotal(r.data.count); })
-      .finally(() => setLoading(false));
+    getExternalRegistry({ search: search || undefined })
+      .then((r) => { if (!cancelled) { setEntries(r.data.results); setTotal(r.data.count); } })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, [search]);
 
   const handleExport = () => {

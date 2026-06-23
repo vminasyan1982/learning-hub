@@ -25,10 +25,12 @@ export default function RegistryPage() {
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
-    getInternalRegistry({ status: status || undefined, search })
-      .then((r) => { setEntries(r.data.results); setTotal(r.data.count); })
-      .finally(() => setLoading(false));
+    getInternalRegistry({ status: status || undefined, search: search || undefined })
+      .then((r) => { if (!cancelled) { setEntries(r.data.results); setTotal(r.data.count); } })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, [status, search]);
 
   const toggle = (id: number) => setExpanded((prev) => {
