@@ -61,8 +61,8 @@ if [[ "$1" == "seed" || "$2" == "seed" ]]; then
 fi
 
 # ── 7. Cleanup ───────────────────────────────
-step "Cleaning up unused images and build cache..."
-ssh "$SERVER" "docker image prune -f && docker builder prune -f"
+step "Cleaning up unused images..."
+ssh "$SERVER" "docker image prune -f"
 ok "Cleanup done"
 
 # ── 8. Health check ──────────────────────────

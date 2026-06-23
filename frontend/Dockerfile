@@ -4,9 +4,11 @@ WORKDIR /app
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
-COPY package.json .
-RUN npm install
+# Copy dependency files first — cached unless they change
+COPY package.json package-lock.json* ./
+RUN npm install --frozen-lockfile 2>/dev/null || npm install
 
+# Copy source and build
 COPY . .
 RUN npm run build
 

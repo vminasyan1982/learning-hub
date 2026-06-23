@@ -36,9 +36,8 @@ jobs:
             echo "==> Collecting static files..."
             docker compose exec -T backend python manage.py collectstatic --noinput --clear
 
-            echo "==> Cleaning up unused images and build cache..."
+            echo "==> Cleaning up unused images..."
             docker image prune -f
-            docker builder prune -f
 
             echo ""
             echo "Deploy complete!"
