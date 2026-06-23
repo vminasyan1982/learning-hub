@@ -108,14 +108,15 @@ class AnalyticsTrendsView(APIView):
         year = request.query_params.get("year")
         trunc_fn = TruncQuarter if granularity == "quarter" else TruncMonth
 
-        qs = TrainingMetric.objects.annotate(period=trunc_fn("training__date")).values("period").annotate(
+        qs = TrainingMetric.objects
+        if year:
+            qs = qs.filter(training__date__year=year)
+
+        qs = qs.annotate(period=trunc_fn("training__date")).values("period").annotate(
             avg_nps=Avg("nps_score"),
             avg_csat=Avg("csat_score"),
             count=Count("id"),
         ).order_by("period")
-
-        if year:
-            qs = qs.filter(training__date__year=year)
 
         data = [
             {

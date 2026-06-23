@@ -18,8 +18,10 @@ export default function DashboardPage() {
   const [granularity, setGranularity] = useState<"month" | "quarter">("month");
 
   useEffect(() => {
-    getAnalyticsSummary().then((r) => setSummary(r.data)).catch(() => {});
-  }, []);
+    getAnalyticsSummary({ period: year || undefined })
+      .then((r) => setSummary(r.data))
+      .catch(() => {});
+  }, [year]);
 
   useEffect(() => {
     getAnalyticsTrends({ granularity, year: year || undefined })
