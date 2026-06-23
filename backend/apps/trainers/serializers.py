@@ -27,12 +27,12 @@ class TrainerSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "created_at"]
 
     def get_avg_nps(self, obj):
-        agg = TrainingMetric.objects.filter(training__trainers_set=obj).aggregate(avg=Avg("nps_score"))
+        agg = TrainingMetric.objects.filter(training__trainers=obj).aggregate(avg=Avg("nps_score"))
         return round(float(agg["avg"] or 0), 2)
 
     def get_avg_csat(self, obj):
-        agg = TrainingMetric.objects.filter(training__trainers_set=obj).aggregate(avg=Avg("csat_score"))
+        agg = TrainingMetric.objects.filter(training__trainers=obj).aggregate(avg=Avg("csat_score"))
         return round(float(agg["avg"] or 0), 2)
 
     def get_training_count(self, obj):
-        return 0
+        return obj.trainings.count()

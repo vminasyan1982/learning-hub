@@ -50,6 +50,7 @@ class Training(models.Model):
     format = models.CharField(max_length=20, choices=TrainingFormat.choices)
     classification = models.CharField(max_length=30, choices=TrainingClassification.choices)
     business_units = models.ManyToManyField(BusinessUnit, blank=True, related_name="trainings")
+    trainers = models.ManyToManyField("trainers.Trainer", blank=True, related_name="trainings")
     description = models.TextField(blank=True)
     lms_url = models.URLField(blank=True)
     asana_url = models.URLField(blank=True)
