@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, BookOpen, ClipboardList, Users, UserCheck,
   Briefcase, BarChart3, Settings, LogOut, Zap, ShieldCheck, DollarSign,
+  Grid, Target, TrendingUp,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 import { useAuthStore } from "@/store/authStore";
@@ -17,6 +18,9 @@ const navItems = [
   { to: "/assessment", icon: BarChart3, label: "Assessment" },
   { to: "/compliance", icon: ShieldCheck, label: "Compliance" },
   { to: "/budget", icon: DollarSign, label: "Budget" },
+  { to: "/skills", icon: Grid, label: "Skills Matrix" },
+  { to: "/idp", icon: Target, label: "My IDP" },
+  { to: "/roi", icon: TrendingUp, label: "ROI" },
 ];
 
 const adminItems = [

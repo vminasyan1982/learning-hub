@@ -19,6 +19,9 @@ import BudgetPage from "@/pages/budget/BudgetPage";
 import AdminUsersPage from "@/pages/admin/AdminUsersPage";
 import ChangePasswordPage from "@/pages/auth/ChangePasswordPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
+import SkillsMatrixPage from "@/pages/skills/SkillsMatrixPage";
+import IDPPage from "@/pages/idp/IDPPage";
+import ROIPage from "@/pages/roi/ROIPage";
 
 export default function App() {
   const { fetchMe } = useAuthStore();
@@ -46,6 +49,9 @@ export default function App() {
             <Route path="/assessment" element={<AssessmentPage />} />
             <Route path="/compliance" element={<CompliancePage />} />
             <Route path="/budget" element={<BudgetPage />} />
+            <Route path="/skills" element={<SkillsMatrixPage />} />
+            <Route path="/idp" element={<IDPPage />} />
+            <Route path="/roi" element={<ROIPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>

@@ -3,6 +3,7 @@ import type {
   AuthTokens, User, InvitationToken, RegistrationRequest,
   Training, InternalRegistryEntry, ExternalRegistryEntry, Trainer, Trainee, PortfolioItem,
   AnalyticsSummary, TrendPoint, PaginatedResponse, ComplianceSummary, BudgetSummary,
+  SkillsMatrix, DevelopmentPlan, DevelopmentGoal, ROISummary,
 } from "@/types";
 
 // Auth
@@ -91,3 +92,13 @@ export const updatePortfolioItem = (id: number, data: object) => api.patch<Portf
 // Compliance & Budget
 export const getCompliance = () => api.get<ComplianceSummary>("/analytics/compliance/");
 export const getBudget = (year?: string) => api.get<BudgetSummary>("/analytics/budget/", { params: { year } });
+
+// Skills Matrix
+export const getSkillsMatrix = () => api.get<SkillsMatrix>("/skills/matrix/");
+
+// IDP
+export const getIDPPlans = (params?: object) => api.get<PaginatedResponse<DevelopmentPlan>>("/idp/", { params });
+export const updateIDPGoal = (id: number, data: object) => api.patch<DevelopmentGoal>(`/idp/goals/${id}/`, data);
+
+// ROI
+export const getROI = (year?: string) => api.get<ROISummary>("/analytics/roi/", { params: { year } });

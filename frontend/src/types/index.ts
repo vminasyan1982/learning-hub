@@ -232,3 +232,58 @@ export interface BudgetSummary {
   variance: number;
   by_quarter: BudgetQuarter[];
 }
+
+export interface Skill {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  order: number;
+  is_active: boolean;
+}
+
+export interface SkillEmployee {
+  id: number;
+  name: string;
+  department: string;
+  skill_levels: Record<string, number>; // skill_id → level (0-4)
+}
+
+export interface SkillsMatrix {
+  skills: Skill[];
+  employees: SkillEmployee[];
+}
+
+export interface DevelopmentGoal {
+  id: number;
+  title: string;
+  description: string;
+  training: number | null;
+  due_date: string | null;
+  is_completed: boolean;
+  completed_at: string | null;
+  order: number;
+}
+
+export interface DevelopmentPlan {
+  id: number;
+  employee: number;
+  title: string;
+  year: number;
+  status: "active" | "completed" | "paused";
+  notes: string;
+  goals: DevelopmentGoal[];
+  created_at: string;
+}
+
+export interface ROISummary {
+  year: string;
+  total_cost: number;
+  total_participants: number;
+  total_trainings: number;
+  cost_per_participant: number;
+  avg_nps: number;
+  avg_csat: number;
+  nps_benchmark: number;
+  csat_benchmark: number;
+}

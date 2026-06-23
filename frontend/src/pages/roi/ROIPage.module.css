@@ -1,0 +1,185 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.select {
+  padding: 9px 14px;
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  outline: none;
+  background: var(--color-white);
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: var(--color-accent);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.kpiCard {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.kpiLabel {
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 10px;
+}
+
+.kpiValue {
+  font-size: 30px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kpiSub {
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+.benchmarkGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.benchmarkCard {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.benchmarkHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.benchmarkTitle {
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-800);
+}
+
+.benchmarkBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.benchmarkValue {
+  font-size: 40px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-800);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.benchmarkScale {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-gray-400);
+}
+
+.benchmarkBarWrap {
+  margin-bottom: 8px;
+}
+
+.benchmarkBar {
+  position: relative;
+  height: 12px;
+  background: var(--color-gray-200);
+  border-radius: 6px;
+  overflow: visible;
+}
+
+.benchmarkFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.benchmarkMarker {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 20px;
+  background: var(--color-gray-500);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  cursor: help;
+}
+
+.benchmarkMarker::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--color-gray-500);
+  border-radius: 50%;
+}
+
+.benchmarkFooter {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-gray-500);
+  margin-top: 4px;
+}
+
+.note {
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .benchmarkGrid {
+    grid-template-columns: 1fr;
+  }
+}

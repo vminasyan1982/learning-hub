@@ -206,3 +206,45 @@ class BudgetView(APIView):
             "variance": total_planned - actual_external,
             "by_quarter": by_quarter,
         })
+
+
+class ROIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from apps.registry.models import ExternalRegistryEntry
+        from django.db.models import Sum, Count, Avg
+
+        year = request.query_params.get("year")
+
+        # Training metrics
+        metrics_qs = TrainingMetric.objects.all()
+        trainings_qs = Training.objects.all()
+        if year:
+            metrics_qs = metrics_qs.filter(training__date__year=year)
+            trainings_qs = trainings_qs.filter(date__year=year)
+
+        total_participants = metrics_qs.aggregate(s=Sum("participants_count"))["s"] or 0
+        total_trainings = trainings_qs.count()
+        avg_nps = float(metrics_qs.aggregate(a=Avg("nps_score"))["a"] or 0)
+        avg_csat = float(metrics_qs.aggregate(a=Avg("csat_score"))["a"] or 0)
+
+        # Costs from external registry
+        ext_qs = ExternalRegistryEntry.objects.all()
+        if year:
+            ext_qs = ext_qs.filter(date__year=year)
+        total_cost = float(ext_qs.aggregate(s=Sum("cost"))["s"] or 0)
+
+        cost_per_participant = round(total_cost / total_participants, 2) if total_participants else 0
+
+        return Response({
+            "year": year or "all",
+            "total_cost": total_cost,
+            "total_participants": total_participants,
+            "total_trainings": total_trainings,
+            "cost_per_participant": cost_per_participant,
+            "avg_nps": round(avg_nps, 2),
+            "avg_csat": round(avg_csat, 2),
+            "nps_benchmark": 3.0,
+            "csat_benchmark": 4.3,
+        })
