@@ -12,7 +12,6 @@ const YEARS = ["2024", "2025", "2026", "2027"];
 const CURRENCIES = [
   { value: "USD", symbol: "$" },
   { value: "EUR", symbol: "€" },
-  { value: "RUB", symbol: "₽" },
 ];
 
 const fmt = (n: number) => n.toLocaleString("en-US");

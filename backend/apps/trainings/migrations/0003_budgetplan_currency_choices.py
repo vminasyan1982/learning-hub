@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
             model_name="budgetplan",
             name="currency",
             field=models.CharField(
-                choices=[("USD", "USD ($)"), ("EUR", "EUR (€)"), ("RUB", "RUB (₽)"), ("AMD", "AMD")],
+                choices=[("USD", "USD ($)"), ("EUR", "EUR (€)"), ("AMD", "AMD")],
                 default="USD",
                 max_length=10,
                 verbose_name="Валюта",
