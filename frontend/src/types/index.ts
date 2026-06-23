@@ -84,6 +84,7 @@ export interface Training {
   drive_url: string;
   feedback_url: string;
   is_internal: boolean;
+  trainers: { id: number; first_name: string; last_name: string }[];
   metric: TrainingMetric | null;
   created_at: string;
 }

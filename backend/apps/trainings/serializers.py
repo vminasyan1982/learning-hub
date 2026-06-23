@@ -18,9 +18,16 @@ class TrainingMetricSerializer(serializers.ModelSerializer):
         ]
 
 
+class TrainerNameSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
+
 class TrainingSerializer(serializers.ModelSerializer):
     metric = TrainingMetricSerializer(read_only=True)
     business_units = BusinessUnitSerializer(many=True, read_only=True)
+    trainers = TrainerNameSerializer(many=True, read_only=True)
     business_unit_ids = serializers.PrimaryKeyRelatedField(
         many=True, queryset=BusinessUnit.objects.all(), source="business_units", write_only=True, required=False
     )
@@ -31,17 +38,17 @@ class TrainingSerializer(serializers.ModelSerializer):
             "id", "title", "date", "end_date", "location", "format",
             "classification", "business_units", "business_unit_ids",
             "description", "lms_url", "asana_url", "drive_url", "feedback_url",
-            "is_internal", "metric", "created_at", "updated_at",
+            "is_internal", "trainers", "metric", "created_at", "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
 
 
 class TrainingListSerializer(serializers.ModelSerializer):
-    """Lighter serializer for list views."""
     metric = TrainingMetricSerializer(read_only=True)
     business_units = BusinessUnitSerializer(many=True, read_only=True)
+    trainers = TrainerNameSerializer(many=True, read_only=True)
 
     class Meta:
         model = Training
         fields = ["id", "title", "date", "format", "classification",
-                  "business_units", "is_internal", "metric"]
+                  "business_units", "is_internal", "trainers", "metric"]

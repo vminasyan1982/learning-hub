@@ -141,8 +141,11 @@ export default function DashboardPage() {
         </div>
 
         <div className={styles.chartCard}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
             <h3>Trainings by Period</h3>
+          </div>
+          <div style={{ fontSize: 12, color: "var(--color-gray-500)", marginBottom: 12 }}>
+            Number of trainings with metrics · filtered by the year selector above
           </div>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={trends} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>

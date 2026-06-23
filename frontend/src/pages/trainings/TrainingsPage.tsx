@@ -111,6 +111,7 @@ export default function TrainingsPage() {
               <th>Date</th>
               <th>Format</th>
               <th>Classification</th>
+              <th>Trainer</th>
               <th>NPS%</th>
               <th>CSAT%</th>
               <th>Participants</th>
@@ -118,9 +119,9 @@ export default function TrainingsPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={8} className={styles.center}>Loading…</td></tr>
+              <tr><td colSpan={9} className={styles.center}>Loading…</td></tr>
             ) : trainings.length === 0 ? (
-              <tr><td colSpan={8} className={styles.center}>No trainings found</td></tr>
+              <tr><td colSpan={9} className={styles.center}>No trainings found</td></tr>
             ) : trainings.map((t) => {
               const isOpen = expanded.has(t.id);
               return (
@@ -137,13 +138,18 @@ export default function TrainingsPage() {
                       </Badge>
                     </td>
                     <td><span className={styles.classification}>{CLASSIFICATION_LABELS[t.classification] || t.classification}</span></td>
+                    <td>
+                      {t.trainers && t.trainers.length > 0
+                        ? t.trainers.map((tr) => `${tr.first_name} ${tr.last_name}`).join(", ")
+                        : "—"}
+                    </td>
                     <td>{t.metric?.nps_percent != null ? `${t.metric.nps_percent}%` : "—"}</td>
                     <td>{t.metric?.csat_percent != null ? `${t.metric.csat_percent}%` : "—"}</td>
                     <td>{t.metric?.participants_count ?? 0}</td>
                   </tr>
                   {isOpen && (
                     <tr key={`${t.id}-detail`} className={styles.expandedRow}>
-                      <td colSpan={8}>
+                      <td colSpan={9}>
                         <div className={styles.expandedContent}>
                           {t.business_units.length > 0 && (
                             <div className={styles.expandedSection}>

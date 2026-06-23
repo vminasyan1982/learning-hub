@@ -4,26 +4,49 @@ import type { PortfolioItem } from "@/types";
 import styles from "./PortfolioPage.module.css";
 import { X, Users, Clock, Globe, ExternalLink } from "lucide-react";
 
+const LANGUAGES = ["Русский", "English"];
+
 export default function PortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<PortfolioItem | null>(null);
+  const [langFilter, setLangFilter] = useState("");
 
   useEffect(() => {
     getPortfolio().then((r) => setItems(r.data.results)).finally(() => setLoading(false));
   }, []);
 
+  const visible = langFilter
+    ? items.filter((i) => i.language === langFilter)
+    : items;
+
   if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>Loading…</div>;
 
   return (
     <>
+      <div style={{ padding: "12px 24px 0", display: "flex", gap: 8 }}>
+        {["", ...LANGUAGES].map((lang) => (
+          <button
+            key={lang}
+            onClick={() => setLangFilter(lang)}
+            style={{
+              padding: "5px 14px", borderRadius: 20, border: "1px solid var(--color-gray-300)",
+              background: langFilter === lang ? "var(--color-primary)" : "var(--color-white)",
+              color: langFilter === lang ? "#fff" : "var(--color-gray-700)",
+              fontSize: 13, cursor: "pointer", fontFamily: "inherit",
+            }}
+          >
+            {lang || "All"}
+          </button>
+        ))}
+      </div>
       <div className={styles.grid}>
-        {items.length === 0 && (
+        {visible.length === 0 && (
           <div style={{ gridColumn: "1/-1", textAlign: "center", color: "var(--color-gray-500)", padding: 40 }}>
-            Portfolio is empty. Add items via Django Admin.
+            {items.length === 0 ? "Portfolio is empty. Add items via Django Admin." : "No courses match the selected language."}
           </div>
         )}
-        {items.map((item) => (
+        {visible.map((item) => (
           <div key={item.id} className={styles.card} onClick={() => setSelected(item)}>
             {item.banner && (
               <div className={styles.banner}>
