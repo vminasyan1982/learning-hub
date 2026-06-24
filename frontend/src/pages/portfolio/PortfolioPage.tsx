@@ -7,6 +7,29 @@ import { useLang } from "@/i18n/LangContext";
 
 const LANGUAGES = ["Русский", "English"];
 
+const CLASSIFICATION_LABELS: Record<string, string> = {
+  online_self: "Онлайн самостоятельный",
+  online_deadline: "Онлайн с дедлайном",
+  online_mixed: "Онлайн смешанный",
+  offline_mixed: "Офлайн смешанный",
+  online_trainer: "Онлайн тренинг",
+  offline_trainer: "Офлайн тренинг",
+  online_workshop: "Онлайн воркшоп",
+  offline_workshop: "Офлайн воркшоп",
+  online_game: "Онлайн бизнес-игра",
+  offline_game: "Офлайн бизнес-игра",
+  online_strategy: "Онлайн стратсессия",
+  offline_strategy: "Офлайн стратсессия",
+  online_coaching: "Онлайн коучинг",
+  offline_coaching: "Офлайн коучинг",
+  online_masterclass: "Онлайн мастер-класс",
+  offline_masterclass: "Офлайн мастер-класс",
+  online_conference: "Онлайн конференция",
+  offline_conference: "Офлайн конференция",
+  online_teambuilding: "Онлайн тимбилдинг",
+  offline_teambuilding: "Офлайн тимбилдинг",
+};
+
 const LANG_KEYWORDS: Record<string, string[]> = {
   "Русский": ["рус", "russian", "ru"],
   "English":  ["eng", "англ", "english", "en"],
@@ -124,6 +147,9 @@ export default function PortfolioPage() {
                     <span className={styles.chip}><Clock size={11} /> {item.duration}</span>
                   )}
                   <span className={styles.chip}><Globe size={11} /> {item.language}</span>
+                  {item.classification && (
+                    <span className={styles.chip}>{CLASSIFICATION_LABELS[item.classification] || item.classification}</span>
+                  )}
                   {item.participants_count > 0 && (
                     <span className={styles.chip}><Users size={11} /> {item.participants_count}</span>
                   )}
@@ -166,6 +192,11 @@ export default function PortfolioPage() {
                   <Globe size={14} />
                   <span>{selected.language}</span>
                 </div>
+                {selected.classification && (
+                  <div className={styles.metaItem}>
+                    <span>{CLASSIFICATION_LABELS[selected.classification] || selected.classification}</span>
+                  </div>
+                )}
                 {selected.participants_count > 0 && (
                   <div className={styles.metaItem}>
                     <Users size={14} />

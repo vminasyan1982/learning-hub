@@ -1,13 +1,20 @@
 from django.db import models
+from apps.trainings.models import TrainingClassification
 
 
 class PortfolioItem(models.Model):
     promo_name = models.CharField(max_length=500, verbose_name="Промо-название")
     internal_name = models.CharField(max_length=500, verbose_name="Внутреннее название")
     category = models.CharField(max_length=100, blank=True, verbose_name="Категория")
+    classification = models.CharField(
+        max_length=30, blank=True,
+        choices=TrainingClassification.choices,
+        verbose_name="Классификация",
+    )
     banner = models.ImageField(upload_to="portfolio/banners/", null=True, blank=True, verbose_name="Баннер")
     skills = models.TextField(blank=True, verbose_name="Навыки")
-    language = models.CharField(max_length=100, default="Русский", verbose_name="Язык")
+    LANGUAGE_CHOICES = [("Русский", "Русский"), ("English", "English")]
+    language = models.CharField(max_length=100, default="Русский", choices=LANGUAGE_CHOICES, verbose_name="Язык")
     enrollment_info = models.TextField(blank=True, verbose_name="Как записаться")
     description = models.TextField(blank=True, verbose_name="Описание курса")
     duration = models.CharField(max_length=100, blank=True, verbose_name="Продолжительность")

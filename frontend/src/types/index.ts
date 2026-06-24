@@ -156,6 +156,7 @@ export interface PortfolioItem {
   skills: string;
   language: string;
   category: string;
+  classification: string;
   enrollment_info: string;
   description: string;
   duration: string;
