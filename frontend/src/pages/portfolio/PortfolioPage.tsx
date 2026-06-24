@@ -6,6 +6,11 @@ import { X, Users, Clock, Globe, ExternalLink } from "lucide-react";
 
 const LANGUAGES = ["Русский", "English"];
 
+const LANG_KEYWORDS: Record<string, string[]> = {
+  "Русский": ["рус", "russian", "ru"],
+  "English":  ["eng", "англ", "english", "en"],
+};
+
 export default function PortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +22,10 @@ export default function PortfolioPage() {
   }, []);
 
   const visible = langFilter
-    ? items.filter((i) => i.language.toLowerCase().includes(langFilter.toLowerCase()))
+    ? items.filter((i) => {
+        const lang = i.language.toLowerCase();
+        return (LANG_KEYWORDS[langFilter] ?? [langFilter.toLowerCase()]).some((kw) => lang.includes(kw));
+      })
     : items;
 
   if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>Loading…</div>;
