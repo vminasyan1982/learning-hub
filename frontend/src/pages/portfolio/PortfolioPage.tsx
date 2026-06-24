@@ -17,28 +17,33 @@ export default function PortfolioPage() {
   }, []);
 
   const visible = langFilter
-    ? items.filter((i) => i.language === langFilter)
+    ? items.filter((i) => i.language.toLowerCase().includes(langFilter.toLowerCase()))
     : items;
 
   if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>Loading…</div>;
 
   return (
     <>
-      <div style={{ padding: "12px 24px 0", display: "flex", gap: 8 }}>
-        {["", ...LANGUAGES].map((lang) => (
-          <button
-            key={lang}
-            onClick={() => setLangFilter(lang)}
-            style={{
-              padding: "5px 14px", borderRadius: 20, border: "1px solid var(--color-gray-300)",
-              background: langFilter === lang ? "var(--color-primary)" : "var(--color-white)",
-              color: langFilter === lang ? "#fff" : "var(--color-gray-700)",
-              fontSize: 13, cursor: "pointer", fontFamily: "inherit",
-            }}
-          >
-            {lang || "All"}
-          </button>
-        ))}
+      <div style={{ padding: "16px 24px 0", display: "flex", gap: 8 }}>
+        {["", ...LANGUAGES].map((lang) => {
+          const active = langFilter === lang;
+          return (
+            <button
+              key={lang}
+              onClick={() => setLangFilter(lang)}
+              style={{
+                padding: "6px 18px", borderRadius: 20, fontFamily: "inherit",
+                fontSize: 13, cursor: "pointer", transition: "all 0.15s",
+                border: active ? "1.5px solid var(--color-primary)" : "1.5px solid var(--color-gray-400)",
+                background: active ? "var(--color-primary)" : "transparent",
+                color: active ? "#fff" : "var(--color-gray-700)",
+                fontWeight: active ? 600 : 400,
+              }}
+            >
+              {lang || "Все языки"}
+            </button>
+          );
+        })}
       </div>
       <div className={styles.grid}>
         {visible.length === 0 && (
