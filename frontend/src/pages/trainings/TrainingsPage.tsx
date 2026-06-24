@@ -99,6 +99,7 @@ export default function TrainingsPage() {
   };
 
   return (
+    <>
     <div className={styles.page}>
       <div className={styles.toolbar}>
         <input
@@ -282,5 +283,6 @@ export default function TrainingsPage() {
         </div>
       </div>
     )}
+    </>
   );
 }
