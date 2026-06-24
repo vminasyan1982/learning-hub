@@ -10,6 +10,20 @@ class TraineeSerializer(serializers.ModelSerializer):
 
 
 class TrainingParticipationSerializer(serializers.ModelSerializer):
+    trainee_name = serializers.SerializerMethodField()
+    trainee_position = serializers.SerializerMethodField()
+    trainee_department = serializers.SerializerMethodField()
+
     class Meta:
         model = TrainingParticipation
-        fields = "__all__"
+        fields = ["id", "trainee", "training", "attended", "completion_date",
+                  "notes", "trainee_name", "trainee_position", "trainee_department"]
+
+    def get_trainee_name(self, obj):
+        return f"{obj.trainee.first_name} {obj.trainee.last_name}"
+
+    def get_trainee_position(self, obj):
+        return obj.trainee.position
+
+    def get_trainee_department(self, obj):
+        return obj.trainee.department

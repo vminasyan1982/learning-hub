@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
-import { getTrainings } from "@/api";
+import { ChevronDown, ChevronRight, ExternalLink, X, Users } from "lucide-react";
+import { getTrainings, getTrainingParticipants } from "@/api";
 import type { Training } from "@/types";
 import Badge from "@/components/ui/Badge";
 import { exportToExcel } from "@/utils/export";
 import styles from "./TrainingsPage.module.css";
+
+type Participant = { id: number; trainee: number; trainee_name: string; trainee_position: string; trainee_department: string; attended: boolean; completion_date: string | null };
 
 const FORMAT_LABELS: Record<string, string> = {
   online: "Online", offline: "Offline", mixed: "Blended",
@@ -44,6 +46,8 @@ export default function TrainingsPage() {
   const [format, setFormat] = useState("");
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const [participantsModal, setParticipantsModal] = useState<{ title: string; list: Participant[] } | null>(null);
+  const [participantsLoading, setParticipantsLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -61,6 +65,16 @@ export default function TrainingsPage() {
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [search, format]);
+
+  const openParticipants = (e: React.MouseEvent, training: Training) => {
+    e.stopPropagation();
+    if (!training.metric?.participants_count) return;
+    setParticipantsLoading(true);
+    setParticipantsModal({ title: training.title, list: [] });
+    getTrainingParticipants(training.id)
+      .then((r) => setParticipantsModal({ title: training.title, list: r.data.results }))
+      .finally(() => setParticipantsLoading(false));
+  };
 
   const toggle = (id: number) => setExpanded((prev) => {
     const next = new Set(prev);
@@ -145,7 +159,17 @@ export default function TrainingsPage() {
                     </td>
                     <td>{t.metric?.nps_percent != null ? `${t.metric.nps_percent}%` : "—"}</td>
                     <td>{t.metric?.csat_percent != null ? `${t.metric.csat_percent}%` : "—"}</td>
-                    <td>{t.metric?.participants_count ?? 0}</td>
+                    <td>
+                      {(t.metric?.participants_count ?? 0) > 0 ? (
+                        <span
+                          onClick={(e) => openParticipants(e, t)}
+                          style={{ cursor: "pointer", color: "var(--color-primary)", fontWeight: 600, textDecoration: "underline" }}
+                          title="Click to view participants"
+                        >
+                          {t.metric!.participants_count}
+                        </span>
+                      ) : 0}
+                    </td>
                   </tr>
                   {isOpen && (
                     <tr key={`${t.id}-detail`} className={styles.expandedRow}>
@@ -189,5 +213,74 @@ export default function TrainingsPage() {
       </div>
       <div className={styles.footer}>Total: {total}</div>
     </div>
+
+    {participantsModal && (
+      <div
+        onClick={() => setParticipantsModal(null)}
+        style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)",
+          zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
+        }}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            background: "var(--color-white)", borderRadius: 12, width: "100%", maxWidth: 560,
+            maxHeight: "80vh", display: "flex", flexDirection: "column",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.25)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 24px", borderBottom: "1px solid var(--color-gray-100)" }}>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: 15, color: "var(--color-gray-900)" }}>
+                <Users size={15} style={{ marginRight: 6, verticalAlign: "middle" }} />
+                Участники
+              </div>
+              <div style={{ fontSize: 12, color: "var(--color-gray-500)", marginTop: 2 }}>{participantsModal.title}</div>
+            </div>
+            <button onClick={() => setParticipantsModal(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-gray-500)", padding: 4 }}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div style={{ overflowY: "auto", flex: 1 }}>
+            {participantsLoading ? (
+              <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-400)" }}>Загрузка…</div>
+            ) : participantsModal.list.length === 0 ? (
+              <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-400)" }}>Список участников не заполнен в системе</div>
+            ) : (
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ background: "var(--color-gray-50)" }}>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>#</th>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>Имя</th>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>Должность</th>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>Отдел</th>
+                    <th style={{ padding: "10px 16px", textAlign: "center", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>✓</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {participantsModal.list.map((p, i) => (
+                    <tr key={p.id} style={{ borderTop: "1px solid var(--color-gray-100)", background: i % 2 === 1 ? "var(--color-gray-50)" : undefined }}>
+                      <td style={{ padding: "10px 16px", color: "var(--color-gray-400)" }}>{i + 1}</td>
+                      <td style={{ padding: "10px 16px", fontWeight: 500 }}>{p.trainee_name}</td>
+                      <td style={{ padding: "10px 16px", color: "var(--color-gray-600)" }}>{p.trainee_position || "—"}</td>
+                      <td style={{ padding: "10px 16px", color: "var(--color-gray-600)" }}>{p.trainee_department || "—"}</td>
+                      <td style={{ padding: "10px 16px", textAlign: "center", color: p.attended ? "var(--color-success)" : "var(--color-danger)", fontWeight: 700 }}>
+                        {p.attended ? "✓" : "✗"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <div style={{ padding: "12px 24px", borderTop: "1px solid var(--color-gray-100)", fontSize: 12, color: "var(--color-gray-400)" }}>
+            Всего: {participantsModal.list.length} участников
+          </div>
+        </div>
+      </div>
+    )}
   );
 }
