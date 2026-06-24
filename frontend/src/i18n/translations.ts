@@ -46,6 +46,36 @@ export const translations = {
     all_languages: "All Languages",
     all_categories: "All Categories",
     search_by_name: "Search by name…",
+    // Table columns
+    name: "Name",
+    email: "Email",
+    position: "Position",
+    business_unit: "Business Unit",
+    department: "Department",
+    status: "Status",
+    deadline: "Deadline",
+    on_time: "On time",
+    request_title: "Request title",
+    provider: "Provider",
+    cost: "Cost",
+    center: "Center",
+    nps_pct: "NPS%",
+    csat_pct: "CSAT%",
+    attended: "Attended",
+    // Actions
+    save: "Save",
+    cancel: "Cancel",
+    send: "Send",
+    // Support
+    support_title: "Technical Support",
+    support_subtitle: "Write to us — we'll respond as soon as possible",
+    support_name: "Your name",
+    support_message: "Describe the problem…",
+    support_sent: "Message sent!",
+    // Profile
+    training_history: "Training history",
+    completed: "Completed",
+    not_completed: "Not completed",
   },
   ru: {
     // Nav
@@ -92,6 +122,36 @@ export const translations = {
     all_languages: "Все языки",
     all_categories: "Все категории",
     search_by_name: "Поиск по названию…",
+    // Table columns
+    name: "Имя",
+    email: "Email",
+    position: "Должность",
+    business_unit: "Бизнес-юнит",
+    department: "Отдел",
+    status: "Статус",
+    deadline: "Дедлайн",
+    on_time: "В срок",
+    request_title: "Название заявки",
+    provider: "Провайдер",
+    cost: "Стоимость",
+    center: "Центр",
+    nps_pct: "NPS%",
+    csat_pct: "CSAT%",
+    attended: "Присутствовал",
+    // Actions
+    save: "Сохранить",
+    cancel: "Отмена",
+    send: "Отправить",
+    // Support
+    support_title: "Техническая поддержка",
+    support_subtitle: "Напишите нам — ответим как можно скорее",
+    support_name: "Ваше имя",
+    support_message: "Опишите проблему…",
+    support_sent: "Сообщение отправлено!",
+    // Profile
+    training_history: "История тренингов",
+    completed: "Завершено",
+    not_completed: "Не завершено",
   },
 } as const;
 

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { X, User, Mail, Briefcase, Building2, BookOpen } from "lucide-react";
+import { X, Mail, Briefcase, Building2, BookOpen } from "lucide-react";
 import { getTrainees, getTraineeHistory } from "@/api";
 import type { Trainee } from "@/types";
 import Badge from "@/components/ui/Badge";
+import { useLang } from "@/i18n/LangContext";
 import styles from "../trainings/TrainingsPage.module.css";
 
 type HistoryEntry = {
@@ -24,6 +25,7 @@ const FORMAT_COLORS: Record<string, "success" | "info" | "warning"> = {
 };
 
 export default function TraineesPage() {
+  const { t } = useLang();
   const [trainees, setTrainees] = useState<Trainee[]>([]);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
@@ -67,11 +69,11 @@ export default function TraineesPage() {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Имя</th>
-                <th>Email</th>
-                <th>Должность</th>
-                <th>Бизнес-юнит</th>
-                <th>Отдел</th>
+                <th>{t("name")}</th>
+                <th>{t("email")}</th>
+                <th>{t("position")}</th>
+                <th>{t("business_unit")}</th>
+                <th>{t("department")}</th>
               </tr>
             </thead>
             <tbody>
@@ -162,7 +164,7 @@ export default function TraineesPage() {
             {/* Training history */}
             <div style={{ flex: 1, overflowY: "auto" }}>
               <div style={{ padding: "14px 24px 6px", fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--color-gray-400)" }}>
-                История тренингов
+                {t("training_history")}
               </div>
               {profileLoading ? (
                 <div style={{ padding: 32, textAlign: "center", color: "var(--color-gray-400)" }}>Загрузка…</div>
@@ -172,7 +174,7 @@ export default function TraineesPage() {
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                   <thead>
                     <tr style={{ background: "var(--color-gray-50)" }}>
-                      {["Тренинг", "Дата", "Формат", "Статус"].map((h) => (
+                      {[t("title"), t("date"), t("format"), t("status")].map((h) => (
                         <th key={h} style={{ padding: "8px 16px", textAlign: "left", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-gray-500)" }}>{h}</th>
                       ))}
                     </tr>
@@ -200,7 +202,7 @@ export default function TraineesPage() {
             </div>
 
             <div style={{ padding: "12px 24px", borderTop: "1px solid var(--color-gray-100)", fontSize: 12, color: "var(--color-gray-400)" }}>
-              Завершено: {attended} · Не завершено: {total_h - attended} · Всего: {total_h}
+              {t("completed")}: {attended} · {t("not_completed")}: {total_h - attended} · {t("total")}: {total_h}
             </div>
           </div>
         </div>

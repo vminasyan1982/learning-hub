@@ -4,6 +4,7 @@ import { getTrainings, getTrainingParticipants } from "@/api";
 import type { Training } from "@/types";
 import Badge from "@/components/ui/Badge";
 import { exportToExcel } from "@/utils/export";
+import { useLang } from "@/i18n/LangContext";
 import styles from "./TrainingsPage.module.css";
 
 type Participant = { id: number; trainee: number; trainee_name: string; trainee_position: string; trainee_department: string; attended: boolean; completion_date: string | null };
@@ -40,6 +41,7 @@ const CLASSIFICATION_LABELS: Record<string, string> = {
 };
 
 export default function TrainingsPage() {
+  const { t } = useLang();
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
@@ -122,14 +124,14 @@ export default function TrainingsPage() {
           <thead>
             <tr>
               <th style={{ width: 24 }} />
-              <th>Title</th>
-              <th>Date</th>
-              <th>Format</th>
-              <th>Classification</th>
-              <th>Trainer</th>
-              <th>NPS%</th>
-              <th>CSAT%</th>
-              <th>Participants</th>
+              <th>{t("title")}</th>
+              <th>{t("date")}</th>
+              <th>{t("format")}</th>
+              <th>{t("classification")}</th>
+              <th>{t("trainer")}</th>
+              <th>{t("nps_pct")}</th>
+              <th>{t("csat_pct")}</th>
+              <th>{t("participants")}</th>
             </tr>
           </thead>
           <tbody>
@@ -254,10 +256,10 @@ export default function TrainingsPage() {
                 <thead>
                   <tr style={{ background: "var(--color-gray-50)" }}>
                     <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>#</th>
-                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>Имя</th>
-                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>Должность</th>
-                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>Отдел</th>
-                    <th style={{ padding: "10px 16px", textAlign: "center", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>✓</th>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t("name")}</th>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t("position")}</th>
+                    <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t("department")}</th>
+                    <th style={{ padding: "10px 16px", textAlign: "center", fontWeight: 600, color: "var(--color-gray-600)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t("attended")}</th>
                   </tr>
                 </thead>
                 <tbody>
