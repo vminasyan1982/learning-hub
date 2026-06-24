@@ -85,6 +85,8 @@ export const getTrainees = (params?: object) =>
 export const createTrainee = (data: object) => api.post<Trainee>("/trainees/", data);
 export const getTrainingParticipants = (trainingId: number) =>
   api.get<PaginatedResponse<{ id: number; trainee: number; trainee_name: string; trainee_position: string; trainee_department: string; attended: boolean; completion_date: string | null }>>("/trainees/participations/", { params: { training: trainingId, page_size: 200 } });
+export const getTraineeHistory = (traineeId: number) =>
+  api.get<PaginatedResponse<{ id: number; training: number; training_title: string; training_date: string | null; training_format: string; attended: boolean; completion_date: string | null; notes: string }>>("/trainees/participations/", { params: { trainee: traineeId, page_size: 200 } });
 
 // Portfolio
 export const getPortfolio = () => api.get<PaginatedResponse<PortfolioItem>>("/portfolio/");
