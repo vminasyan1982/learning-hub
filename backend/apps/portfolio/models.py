@@ -1,5 +1,28 @@
 from django.db import models
-from apps.trainings.models import TrainingClassification
+
+
+CLASSIFICATION_CHOICES = [
+    ("online_self", "Онлайн самостоятельный курс"),
+    ("online_deadline", "Онлайн курс с дедлайном"),
+    ("online_mixed", "Онлайн смешанный (LMS/EX + воркшоп)"),
+    ("offline_mixed", "Офлайн смешанный"),
+    ("online_trainer", "Онлайн тренинг с тренером"),
+    ("offline_trainer", "Офлайн тренинг с тренером"),
+    ("online_workshop", "Онлайн воркшоп с тренером"),
+    ("offline_workshop", "Офлайн воркшоп с тренером"),
+    ("online_game", "Онлайн бизнес-игра с тренером"),
+    ("offline_game", "Офлайн бизнес-игра с тренером"),
+    ("online_strategy", "Онлайн стратегическая сессия"),
+    ("offline_strategy", "Офлайн стратегическая сессия"),
+    ("online_coaching", "Онлайн коучинг"),
+    ("offline_coaching", "Офлайн коучинг"),
+    ("online_masterclass", "Онлайн мастер-класс"),
+    ("offline_masterclass", "Офлайн мастер-класс"),
+    ("online_conference", "Онлайн конференция"),
+    ("offline_conference", "Офлайн конференция"),
+    ("online_teambuilding", "Онлайн тимбилдинг"),
+    ("offline_teambuilding", "Офлайн тимбилдинг"),
+]
 
 
 class PortfolioItem(models.Model):
@@ -8,7 +31,7 @@ class PortfolioItem(models.Model):
     category = models.CharField(max_length=100, blank=True, verbose_name="Категория")
     classification = models.CharField(
         max_length=30, blank=True,
-        choices=TrainingClassification.choices,
+        choices=CLASSIFICATION_CHOICES,
         verbose_name="Классификация",
     )
     banner = models.ImageField(upload_to="portfolio/banners/", null=True, blank=True, verbose_name="Баннер")
