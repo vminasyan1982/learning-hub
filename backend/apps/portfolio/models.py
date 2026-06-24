@@ -1,6 +1,20 @@
 from django.db import models
 
 
+CATEGORY_CHOICES = [
+    ("Leadership", "Leadership"),
+    ("Management", "Management"),
+    ("Sales", "Sales"),
+    ("Hard Skills", "Hard Skills"),
+    ("Soft Skills", "Soft Skills"),
+    ("Digital Tools", "Digital Tools"),
+    ("Compliance", "Compliance"),
+    ("Onboarding", "Onboarding"),
+    ("Coaching", "Coaching"),
+    ("Teambuilding", "Teambuilding"),
+    ("Strategy", "Strategy"),
+]
+
 CLASSIFICATION_CHOICES = [
     ("online_self", "Онлайн самостоятельный курс"),
     ("online_deadline", "Онлайн курс с дедлайном"),
@@ -28,7 +42,7 @@ CLASSIFICATION_CHOICES = [
 class PortfolioItem(models.Model):
     promo_name = models.CharField(max_length=500, verbose_name="Промо-название")
     internal_name = models.CharField(max_length=500, verbose_name="Внутреннее название")
-    category = models.CharField(max_length=100, blank=True, verbose_name="Категория")
+    category = models.CharField(max_length=100, blank=True, choices=CATEGORY_CHOICES, verbose_name="Категория")
     classification = models.CharField(
         max_length=30, blank=True,
         choices=CLASSIFICATION_CHOICES,
