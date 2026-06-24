@@ -24,7 +24,8 @@ export default function PortfolioPage() {
 
   return (
     <>
-      <div style={{ padding: "16px 24px 0", display: "flex", gap: 8 }}>
+      <div className={styles.page}>
+      <div className={styles.filters}>
         {["", ...LANGUAGES].map((lang) => {
           const active = langFilter === lang;
           return (
@@ -82,6 +83,7 @@ export default function PortfolioPage() {
             </div>
           </div>
         ))}
+      </div>
       </div>
 
       {selected && (
