@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Sun, Moon, User, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useThemeStore } from "@/store/themeStore";
+import { useLang } from "@/i18n/LangContext";
 import styles from "./Header.module.css";
 
 const titles: Record<string, string> = {
@@ -29,6 +30,7 @@ export default function Header() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { theme, toggle } = useThemeStore();
+  const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -54,6 +56,24 @@ export default function Header() {
       <h1 className={styles.title}>{title}</h1>
 
       <div className={styles.right} ref={ref}>
+        <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+          {(["en", "ru"] as const).map((l) => (
+            <button
+              key={l}
+              onClick={() => setLang(l)}
+              style={{
+                padding: "3px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600,
+                border: "1px solid var(--color-gray-300)", cursor: "pointer",
+                background: lang === l ? "var(--color-primary)" : "transparent",
+                color: lang === l ? "#fff" : "var(--color-gray-600)",
+                fontFamily: "inherit",
+              }}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
+
         <button className={styles.themeBtn} onClick={toggle} title={theme === "dark" ? "Switch to light" : "Switch to dark"}>
           {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
         </button>

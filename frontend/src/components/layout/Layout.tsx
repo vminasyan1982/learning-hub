@@ -4,6 +4,7 @@ import Header from "./Header";
 import styles from "./Layout.module.css";
 import { useAuthStore } from "@/store/authStore";
 import { Navigate } from "react-router-dom";
+import SupportWidget from "@/components/support/SupportWidget";
 
 export default function Layout() {
   const { user } = useAuthStore();
@@ -21,6 +22,7 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+      <SupportWidget />
     </div>
   );
 }

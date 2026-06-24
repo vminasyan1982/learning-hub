@@ -6,29 +6,31 @@ import {
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 import { useAuthStore } from "@/store/authStore";
-
-const navItems = [
-  { to: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/portfolio", icon: Briefcase, label: "T&D Portfolio" },
-  { to: "/trainings", icon: BookOpen, label: "Trainings" },
-  { to: "/registry/internal", icon: ClipboardList, label: "Internal Registry" },
-  { to: "/registry/external", icon: ClipboardList, label: "External Registry" },
-  { to: "/trainers", icon: Users, label: "Trainers" },
-  { to: "/trainees", icon: UserCheck, label: "Participants" },
-  { to: "/assessment", icon: BarChart3, label: "Assessment" },
-  { to: "/compliance", icon: ShieldCheck, label: "Compliance" },
-  { to: "/budget", icon: DollarSign, label: "Budget" },
-  { to: "/skills", icon: Grid, label: "Skills Matrix" },
-  { to: "/idp", icon: Target, label: "My IDP" },
-  { to: "/roi", icon: TrendingUp, label: "ROI" },
-];
-
-const adminItems = [
-  { to: "/admin/users", icon: Settings, label: "Users" },
-];
+import { useLang } from "@/i18n/LangContext";
 
 export default function Sidebar() {
   const { user, logout } = useAuthStore();
+  const { t } = useLang();
+
+  const navItems = [
+    { to: "/", icon: LayoutDashboard, label: t("nav_dashboard") },
+    { to: "/portfolio", icon: Briefcase, label: t("nav_portfolio") },
+    { to: "/trainings", icon: BookOpen, label: t("nav_trainings") },
+    { to: "/registry/internal", icon: ClipboardList, label: t("nav_registry_internal") },
+    { to: "/registry/external", icon: ClipboardList, label: t("nav_registry_external") },
+    { to: "/trainers", icon: Users, label: t("nav_trainers") },
+    { to: "/trainees", icon: UserCheck, label: t("nav_participants") },
+    { to: "/assessment", icon: BarChart3, label: t("nav_assessment") },
+    { to: "/compliance", icon: ShieldCheck, label: t("nav_compliance") },
+    { to: "/budget", icon: DollarSign, label: t("nav_budget") },
+    { to: "/skills", icon: Grid, label: t("nav_skills") },
+    { to: "/idp", icon: Target, label: t("nav_idp") },
+    { to: "/roi", icon: TrendingUp, label: t("nav_roi") },
+  ];
+
+  const adminItems = [
+    { to: "/admin/users", icon: Settings, label: t("nav_users") },
+  ];
 
   return (
     <aside className={styles.sidebar}>

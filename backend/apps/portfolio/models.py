@@ -4,6 +4,7 @@ from django.db import models
 class PortfolioItem(models.Model):
     promo_name = models.CharField(max_length=500, verbose_name="Промо-название")
     internal_name = models.CharField(max_length=500, verbose_name="Внутреннее название")
+    category = models.CharField(max_length=100, blank=True, verbose_name="Категория")
     banner = models.ImageField(upload_to="portfolio/banners/", null=True, blank=True, verbose_name="Баннер")
     skills = models.TextField(blank=True, verbose_name="Навыки")
     language = models.CharField(max_length=100, default="Русский", verbose_name="Язык")

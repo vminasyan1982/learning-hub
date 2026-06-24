@@ -3,6 +3,7 @@ import { getPortfolio } from "@/api";
 import type { PortfolioItem } from "@/types";
 import styles from "./PortfolioPage.module.css";
 import { X, Users, Clock, Globe, ExternalLink } from "lucide-react";
+import { useLang } from "@/i18n/LangContext";
 
 const LANGUAGES = ["Русский", "English"];
 
@@ -12,86 +13,129 @@ const LANG_KEYWORDS: Record<string, string[]> = {
 };
 
 export default function PortfolioPage() {
+  const { t } = useLang();
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<PortfolioItem | null>(null);
   const [langFilter, setLangFilter] = useState("");
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   useEffect(() => {
-    getPortfolio().then((r) => setItems(r.data.results)).finally(() => setLoading(false));
-  }, []);
+    setLoading(true);
+    getPortfolio({ search: search || undefined })
+      .then((r) => setItems(r.data.results))
+      .finally(() => setLoading(false));
+  }, [search]);
 
-  const visible = langFilter
-    ? items.filter((i) => {
-        const lang = i.language.toLowerCase();
-        return (LANG_KEYWORDS[langFilter] ?? [langFilter.toLowerCase()]).some((kw) => lang.includes(kw));
-      })
-    : items;
+  const categories = [...new Set(items.map((i) => i.category).filter(Boolean))];
 
-  if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>Loading…</div>;
+  const visible = items.filter((i) => {
+    if (langFilter) {
+      const lang = i.language.toLowerCase();
+      const keywords = LANG_KEYWORDS[langFilter] ?? [langFilter.toLowerCase()];
+      if (!keywords.some((kw) => lang.includes(kw))) return false;
+    }
+    if (categoryFilter && i.category !== categoryFilter) return false;
+    return true;
+  });
+
+  if (loading) return <div style={{ padding: 40, textAlign: "center", color: "var(--color-gray-500)" }}>{t("loading")}</div>;
 
   return (
     <>
       <div className={styles.page}>
-      <div className={styles.filters}>
-        {["", ...LANGUAGES].map((lang) => {
-          const active = langFilter === lang;
-          return (
-            <button
-              key={lang}
-              onClick={() => setLangFilter(lang)}
-              style={{
-                padding: "6px 18px", borderRadius: 20, fontFamily: "inherit",
-                fontSize: 13, cursor: "pointer", transition: "all 0.15s",
-                border: active ? "1.5px solid var(--color-primary)" : "1.5px solid var(--color-gray-400)",
-                background: active ? "var(--color-primary)" : "transparent",
-                color: active ? "#fff" : "var(--color-gray-700)",
-                fontWeight: active ? 600 : 400,
-              }}
-            >
-              {lang || "Все языки"}
-            </button>
-          );
-        })}
-      </div>
-      <div className={styles.grid}>
-        {visible.length === 0 && (
-          <div style={{ gridColumn: "1/-1", textAlign: "center", color: "var(--color-gray-500)", padding: 40 }}>
-            {items.length === 0 ? "Portfolio is empty. Add items via Django Admin." : "No courses match the selected language."}
-          </div>
-        )}
-        {visible.map((item) => (
-          <div key={item.id} className={styles.card} onClick={() => setSelected(item)}>
-            {item.banner && (
-              <div className={styles.banner}>
-                <img src={item.banner} alt={item.promo_name} />
-              </div>
-            )}
-            {!item.banner && (
-              <div className={styles.bannerPlaceholder}>
-                <Globe size={32} color="var(--color-gray-300)" />
-              </div>
-            )}
-            <div className={styles.body}>
-              <h3 className={styles.promoName}>{item.promo_name}</h3>
-              <div className={styles.internalName}>{item.internal_name}</div>
-              <div className={styles.chips}>
-                {item.duration && (
-                  <span className={styles.chip}><Clock size={11} /> {item.duration}</span>
-                )}
-                <span className={styles.chip}><Globe size={11} /> {item.language}</span>
-                {item.participants_count > 0 && (
-                  <span className={styles.chip}><Users size={11} /> {item.participants_count}</span>
-                )}
-              </div>
-              {item.skills && (
-                <div className={styles.skills}>{item.skills}</div>
-              )}
-              <div className={styles.clickHint}>Click to view details →</div>
+        <div className={styles.filters}>
+          {/* Search input */}
+          <input
+            placeholder={t("search_by_name")}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              padding: "6px 14px", borderRadius: 8, fontSize: 13,
+              border: "1.5px solid var(--color-gray-300)", fontFamily: "inherit",
+              outline: "none", minWidth: 200,
+              background: "var(--color-white)", color: "var(--color-gray-700)",
+            }}
+          />
+
+          {/* Category dropdown */}
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            style={{
+              padding: "6px 14px", borderRadius: 8, fontSize: 13,
+              border: "1.5px solid var(--color-gray-300)", fontFamily: "inherit",
+              outline: "none", background: "var(--color-white)", color: "var(--color-gray-700)",
+              cursor: "pointer",
+            }}
+          >
+            <option value="">{t("all_categories")}</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+
+          {/* Language filter buttons */}
+          {["", ...LANGUAGES].map((lang) => {
+            const active = langFilter === lang;
+            return (
+              <button
+                key={lang}
+                onClick={() => setLangFilter(lang)}
+                style={{
+                  padding: "6px 18px", borderRadius: 20, fontFamily: "inherit",
+                  fontSize: 13, cursor: "pointer", transition: "all 0.15s",
+                  border: active ? "1.5px solid var(--color-primary)" : "1.5px solid var(--color-gray-400)",
+                  background: active ? "var(--color-primary)" : "transparent",
+                  color: active ? "#fff" : "var(--color-gray-700)",
+                  fontWeight: active ? 600 : 400,
+                }}
+              >
+                {lang || t("all_languages")}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className={styles.grid}>
+          {visible.length === 0 && (
+            <div style={{ gridColumn: "1/-1", textAlign: "center", color: "var(--color-gray-500)", padding: 40 }}>
+              {items.length === 0 ? "Portfolio is empty. Add items via Django Admin." : t("no_data")}
             </div>
-          </div>
-        ))}
-      </div>
+          )}
+          {visible.map((item) => (
+            <div key={item.id} className={styles.card} onClick={() => setSelected(item)}>
+              {item.banner && (
+                <div className={styles.banner}>
+                  <img src={item.banner} alt={item.promo_name} />
+                </div>
+              )}
+              {!item.banner && (
+                <div className={styles.bannerPlaceholder}>
+                  <Globe size={32} color="var(--color-gray-300)" />
+                </div>
+              )}
+              <div className={styles.body}>
+                <h3 className={styles.promoName}>{item.promo_name}</h3>
+                <div className={styles.internalName}>{item.internal_name}</div>
+                <div className={styles.chips}>
+                  {item.duration && (
+                    <span className={styles.chip}><Clock size={11} /> {item.duration}</span>
+                  )}
+                  <span className={styles.chip}><Globe size={11} /> {item.language}</span>
+                  {item.participants_count > 0 && (
+                    <span className={styles.chip}><Users size={11} /> {item.participants_count}</span>
+                  )}
+                </div>
+                {item.skills && (
+                  <div className={styles.skills}>{item.skills}</div>
+                )}
+                <div className={styles.clickHint}>Click to view details →</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {selected && (

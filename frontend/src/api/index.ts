@@ -89,7 +89,7 @@ export const getTraineeHistory = (traineeId: number) =>
   api.get<PaginatedResponse<{ id: number; training: number; training_title: string; training_date: string | null; training_format: string; attended: boolean; completion_date: string | null; notes: string }>>("/trainees/participations/", { params: { trainee: traineeId, page_size: 200 } });
 
 // Portfolio
-export const getPortfolio = () => api.get<PaginatedResponse<PortfolioItem>>("/portfolio/");
+export const getPortfolio = (params?: object) => api.get<PaginatedResponse<PortfolioItem>>("/portfolio/", { params });
 export const createPortfolioItem = (data: object) => api.post<PortfolioItem>("/portfolio/", data);
 export const updatePortfolioItem = (id: number, data: object) => api.patch<PortfolioItem>(`/portfolio/${id}/`, data);
 
@@ -106,3 +106,16 @@ export const updateIDPGoal = (id: number, data: object) => api.patch<Development
 
 // ROI
 export const getROI = (year?: string) => api.get<ROISummary>("/analytics/roi/", { params: { year } });
+
+// Trainer profile
+export const getTrainerProfile = (id: number) =>
+  api.get<{
+    id: number; first_name: string; last_name: string; email: string; phone: string;
+    bio: string; trainer_types: string[]; is_internal: boolean; training_count: number;
+    format_breakdown: Record<string, number>;
+    history: Array<{ id: number; title: string; date: string | null; format: string; nps_percent: number | null; csat_percent: number | null; participants_count: number; business_units: string[] }>;
+  }>(`/trainers/${id}/profile/`);
+
+// Support
+export const postSupport = (data: { name: string; message: string }) =>
+  api.post("/support/", data);
