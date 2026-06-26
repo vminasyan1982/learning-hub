@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 
 from .models import User, InvitationToken, RegistrationRequest, RegistrationStatus, Lookup, LookupCategory
 from .serializers import (
-    UserSerializer, InvitationTokenSerializer, RegistrationRequestSerializer,
+    UserSerializer, MeSerializer, InvitationTokenSerializer, RegistrationRequestSerializer,
     RegistrationSubmitSerializer, ApproveRegistrationSerializer, DenyRegistrationSerializer,
     ChangePasswordSerializer,
 )
@@ -207,7 +207,7 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
 
 class MeView(generics.RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = MeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):

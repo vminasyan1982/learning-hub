@@ -12,6 +12,17 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "date_joined", "must_change_password"]
 
 
+class MeSerializer(serializers.ModelSerializer):
+    """Safe serializer for /auth/me/ — role and is_active are always read-only."""
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "first_name", "last_name",
+                  "role", "department", "business_unit", "position", "phone",
+                  "is_active", "date_joined", "must_change_password"]
+        read_only_fields = ["id", "username", "role", "is_active",
+                            "date_joined", "must_change_password"]
+
+
 class UserBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
